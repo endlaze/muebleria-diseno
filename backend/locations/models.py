@@ -7,17 +7,18 @@ class Country(models.Model):
     phone_code = models.IntegerField()
 
 
-class City(models.Model):
+class State(models.Model):
     name = models.CharField(max_length=50)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(
+        Country, related_name='states', on_delete=models.CASCADE)
 
 
-class Location(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+class Workplace(models.Model):
+    state = models.ForeignKey(State, related_name='workplaces', on_delete=models.CASCADE)
     BRANCH_OFFICE = 1
     WORKSHOP = 2
-    LOC_TYPES = (
+    WP_TYPES = (
         (BRANCH_OFFICE, 'Sucursal'),
         (WORKSHOP, 'Taller')
     )
-    loc_type = models.IntegerField(choices=LOC_TYPES)
+    wp_type = models.IntegerField(choices=WP_TYPES)
