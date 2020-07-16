@@ -16,15 +16,14 @@ class Employee(User):
 
 
 class Client(User):
-    def add_address(self, state, zip_code, address_line):
-        Address.objects.create(client=self, state=state,
-                               zip_code=zip_code, address_line=address_line)
+    birthdate = models.DateField()
 
 
 class Address(models.Model):
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE,
-        related_name='addresses')
+        related_name='addresses'
+    )
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     zip_code = models.IntegerField()
     address_line = models.CharField(max_length=100)

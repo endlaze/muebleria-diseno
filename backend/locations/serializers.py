@@ -1,6 +1,5 @@
 from .models import Country, State, Workplace
 from rest_framework import serializers
-import logging
 
 
 class StateSerializer(serializers.ModelSerializer):

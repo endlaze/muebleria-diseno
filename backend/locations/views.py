@@ -1,6 +1,5 @@
 
 from rest_framework import viewsets
-from rest_framework.response import Response
 from .models import Country, Workplace, State
 from .serializers import CountrySerializer, WorkplaceSerializer
 
