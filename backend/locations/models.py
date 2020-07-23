@@ -14,7 +14,10 @@ class State(models.Model):
 
 
 class Workplace(models.Model):
-    state = models.ForeignKey(State, related_name='workplaces', on_delete=models.CASCADE)
+    state = models.ForeignKey(
+        State, related_name='workplaces',
+        on_delete=models.CASCADE
+    )
     BRANCH_OFFICE = 1
     WORKSHOP = 2
     WP_TYPES = (
