@@ -9,7 +9,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Furniture
-        fields = ['id', 'description', 'price', 'available_quantity']
+        fields = ['id', 'title', 'description', 'price', 'available_quantity']
 
 
 class MaterialSerializer(serializers.ModelSerializer):
