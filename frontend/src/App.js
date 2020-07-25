@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ClientHome from './containers/ClientHome'
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar/Navbar'
 const App = () => {
   return (
     <>

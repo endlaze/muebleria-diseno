@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/icons/Menu'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import './Navbar.css'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,13 +25,13 @@ const AppNavbar = () => {
   const classes = useStyles();
   return(
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className="navbar">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Menu />
           </IconButton>
           <Typography className={classes.title} variant="h6" >
-            News
+            MueblesTEC
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
