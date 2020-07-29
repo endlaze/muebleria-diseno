@@ -5,16 +5,17 @@ import Navbar from './components/Navbar/Navbar'
 import AddWorkplace from './components/AddWorkplace'
 import AddEmployee from './components/AddEmployee'
 import AddFurniture from './components/AddFurniture'
+import {StoreProvider} from './Store'
 
 const App = () => {
   return (
-    <>
-    {/* <Navbar/>
+    <StoreProvider>
+    <Navbar/>
     <div className="App">
       <ClientHome></ClientHome>
-    </div> */}
-    <AddFurniture/>
-    </>
+    </div>
+    {/* <AddFurniture/> */}
+    </StoreProvider>
   );
 }
 
