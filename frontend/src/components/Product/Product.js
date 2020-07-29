@@ -8,7 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCart from '@material-ui/icons/AddShoppingCart'
-
+import {useStore} from '../../Store'
 const useStyles = makeStyles({
   product: {
     maxWidth: 345,
@@ -18,7 +18,8 @@ const useStyles = makeStyles({
   },
 });
 
-const Product = ({title, description, price, available_quantity}, props) => {
+const Product = ({title, description, price, available_quantity, product}, props) => {
+  const [store, dispatch] = useStore();
   const classes = useStyles();
   return (
     <Card className={classes.product} {...props}>
@@ -46,7 +47,9 @@ const Product = ({title, description, price, available_quantity}, props) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button variant="contained"
+        <Button
+        onClick={()=> dispatch({type: 'add-to-cart', furniture: product})}
+        variant="contained"
         color="primary"
         startIcon={<AddShoppingCart/>}>
           Agregar al carrito

@@ -20,18 +20,18 @@ const useStyles = makeStyles({
 const ProductList = () => {
   const classes = useStyles();
   const productDescription = {title: "Mueble", description: "Mueble de madera", price: 60000, available_quantity: 5}
-  useEffect(() => {
-    axios.get('/product/furniture/').then((forniture) => {
-      productList = forniture.data
-    })
-  })
+  // useEffect(() => {
+  //   axios.get('/product/furniture/').then((forniture) => {
+  //     productList = forniture.data
+  //   })
+  // })
   const productList = [] 
   for (let index = 0; index < 10; index++) {
     productList.push(productDescription)
   }
 
   const productsflex = productList.map((product, index) =>
-    <Product key={index} {...product} ></Product>
+    <Product key={index} {...product} product={product}></Product>
   );
 
   return(
