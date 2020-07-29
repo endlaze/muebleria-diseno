@@ -1,14 +1,19 @@
 import React from 'react';
 import './App.css';
-import ClientHome from './containers/ClientHome'
+import ClientHome from './pages/ClientHome/ClientHome'
 import Navbar from './components/Navbar/Navbar'
+import AddWorkplace from './components/AddWorkplace'
+import AddEmployee from './components/AddEmployee'
+import AddFurniture from './components/AddFurniture'
+
 const App = () => {
   return (
     <>
-    <Navbar/>
+    {/* <Navbar/>
     <div className="App">
       <ClientHome></ClientHome>
-    </div>
+    </div> */}
+    <AddFurniture/>
     </>
   );
 }
