@@ -7,6 +7,7 @@ import AddEmployee from './components/AddEmployee'
 import AddFurniture from './components/AddFurniture'
 import {StoreProvider} from './Store'
 
+import Checkout from './pages/Checkout'
 const App = () => {
   return (
     <StoreProvider>
