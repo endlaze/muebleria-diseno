@@ -6,17 +6,19 @@ import AddWorkplace from './components/AddWorkplace'
 import AddEmployee from './components/AddEmployee'
 import AddFurniture from './components/AddFurniture'
 import {StoreProvider} from './Store'
-
 import Checkout from './pages/Checkout'
+import Routes from './Routes';
+
+
 const App = () => {
   return (
-    <StoreProvider>
-    <Navbar/>
     <div className="App">
-      <ClientHome></ClientHome>
+      
+      <StoreProvider>
+        <Routes/>
+      </StoreProvider>
+    
     </div>
-    {/* <AddFurniture/> */}
-    </StoreProvider>
   );
 }
 

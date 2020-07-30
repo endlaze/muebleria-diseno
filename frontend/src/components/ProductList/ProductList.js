@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import './ProductList.css'
 import Product from '../Product/Product'
 import Typography from '@material-ui/core/Typography';
@@ -19,27 +19,23 @@ const useStyles = makeStyles({
 
 const ProductList = () => {
   const classes = useStyles();
-  const productDescription = {title: "Mueble", description: "Mueble de madera", price: 60000, available_quantity: 5}
-  // useEffect(() => {
-  //   axios.get('/product/furniture/').then((forniture) => {
-  //     productList = forniture.data
-  //   })
-  // })
-  const productList = [] 
-  for (let index = 0; index < 10; index++) {
-    productList.push(productDescription)
-  }
+  const [furnitures, setFurnitures] = useState([])
+  const productDescription = {id: 1, title: "Mueble", description: "Mueble de madera", price: 60000, available_quantity: 5}
 
-  const productsflex = productList.map((product, index) =>
-    <Product key={index} {...product} product={product}></Product>
-  );
+  useEffect(() => {
+    axios.get('/product/furniture/').then((fornitures) => {
+      setFurnitures(fornitures.data)
+    })
+  }, [])
 
   return(
     <>
       <Container className={classes.productContainer}>
         <Typography variant="h2" gutterBottom> Nuestros productos</Typography>
         <Box display="flex" flexWrap="wrap" justifyContent="center" className={classes.productContainer}>
-            {productsflex}
+          {furnitures.map((product, index) =>
+            <Product key={index} {...product} product={product}></Product>
+          )}
         </Box>
       </Container>
     </>
