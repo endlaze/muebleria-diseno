@@ -7,7 +7,8 @@ const initialState = {
 const reducer = (state, action) => {
   switch(action.type) {
     case 'add-to-cart':
-      return state.cart.includes(action.furniture) ?  state : { cart: [...state.cart, action.furniture]};
+      const found = state.cart.some(fur => fur.id === action.furniture.id)
+      return found ?  state : { cart: [...state.cart, {...action.furniture, quantity: 1}]};
     case 'delete-from-cart':
       let filtered = state.cart.filter(function(value){ return value.id !== action.id;});
       return {cart: filtered};
