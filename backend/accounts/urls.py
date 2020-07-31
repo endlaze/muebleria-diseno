@@ -1,4 +1,4 @@
-from .views import EmployeeTypeViewSet, EmployeeViewSet, ClientViewSet, AddressViewSet
+from .views import EmployeeTypeViewSet, EmployeeViewSet, ClientViewSet, AddressViewSet, AuthViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()

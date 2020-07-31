@@ -7,17 +7,20 @@ import AddEmployee from './components/AddEmployee'
 import AddFurniture from './components/AddFurniture'
 import AddPromotion from './components/AddPromotion'
 import {StoreProvider} from './Store'
+import Checkout from './pages/Checkout'
+import Routes from './Routes';
+
 
 const App = () => {
   return (
-    //<StoreProvider>
-    //<Navbar/>
-    //<div className="App">
-      //<ClientHome></ClientHome>
-    //</div>
-      /*{*/ /*<AddFurniture/>*/ /*}*/
-    //</StoreProvider>
     <AddPromotion/>
+    /*<div className="App">
+      
+      <StoreProvider>
+        <Routes/>
+      </StoreProvider>
+    
+    </div>*/
   );
 }
 

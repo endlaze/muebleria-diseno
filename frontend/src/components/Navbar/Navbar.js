@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/icons/Menu'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import {Link} from 'react-router-dom'
 import './Navbar.css'
 import {useStore} from '../../Store'
 
@@ -21,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
   },
   navbar: {
     backgroundColor: '#333 !important'
+  },
+  link: {
+    textDecoration: 'none',
+    flexGrow: 1,
+    color: 'white'
   }
 }));
 
@@ -35,13 +41,17 @@ const AppNavbar = () => {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <Menu />
           </IconButton>
-          <Typography className={classes.title} variant="h6" >
+          <Link className={classes.link} to="/">
+          <Typography  variant="h6" >
             MueblesTEC
           </Typography>
-          <Typography className={classes.menuButton} variant="h6" >
+          </Link>
+          <Link to="/checkout">
+          <Typography className={classes.link} variant="h6" >
             Carrito {store.cart.length}
           </Typography> 
-          <Button color="inherit">Login</Button>
+          </Link>
+          <Button color="inherit">Salir</Button>
         </Toolbar>
       </AppBar>
     </div>

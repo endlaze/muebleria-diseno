@@ -28,7 +28,7 @@ const Product = ({title, description, price, available_quantity, product}, props
           component="img"
           alt={title}
           height="200"
-          image="http://www.tiendahimalaya.cl/wp-content/uploads/2017/07/VA-335-mesa-cuadrada-madera-natural4.jpg"
+          image={product.picture || "https://politify.us/wp-content/uploads/2018/11/mesas-de-madera-para-comedor-arquitectura-casas.jpg"}
           title={title}
         />
         <CardContent>

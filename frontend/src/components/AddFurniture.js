@@ -10,6 +10,10 @@ const useStyles = makeStyles(() => ({
   },
   button: {
     marginLeft: 20
+  },
+  image: {
+    margin: '20px 20px 20px 20px',
+    maxWidth: 200
   }
 }));
 
@@ -24,6 +28,8 @@ const Furniture = () => {
 
   const [worplaces, setWorkplaces] = useState([])
   const [workplace, setWorkplace] = useState('')
+
+  const [image, setImage] = useState('')
 
   const [snack, setSnack] = useState({ open: false, message: '', severity: '' })
 
@@ -53,13 +59,17 @@ const Furniture = () => {
   }
 
   const submitFurniture = () => {
-    axios.post('/account/employee/', {
+    axios.post('/product/furniture/', {
       title: title.value,
       description: description.value,
       price: price.value,
       available_quantity: availableQuantity.value,
+      picture: image,
+      furn_type_id: furnitureType,
+      materials_ids: [material],
+      workshop_id: workplace
     }).then(() => {
-      setSnack({ open: true, severity: 'success', message: 'Empleado creado.' })
+      setSnack({ open: true, severity: 'success', message: 'Mueble creado' })
     })
 
   }
@@ -73,9 +83,29 @@ const Furniture = () => {
       availableQuantity.value && furnitureType && material) || false
   }
 
+  const processImage = (imageFile) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      resolve(event.target.result)
+    }
+
+    if (imageFile) {
+      reader.readAsDataURL(imageFile);
+    }
+  });
+
+
+  const handleFileUpload = (e) => {
+    processImage(e.target.files[0]).then((encoded) => {
+      setImage(encoded)
+    })
+  }
+
   return (
     <Container>
       <div noValidate autoComplete="off">
+        <img src={image} className={classes.image}></img>
+        <TextField onChange={handleFileUpload} type="file" accept="image/*" variant="outlined" className={classes.input} />
         <TextField label="Titulo" variant="outlined" {...title} className={classes.input} />
         <TextField label="Descripcion" variant="outlined" {...description} className={classes.input} />
         <TextField label="Precio" variant="outlined" {...price} className={classes.input} />
@@ -130,8 +160,6 @@ const Furniture = () => {
           {snack.message}
         </Alert>
       </Snackbar>
-
-
     </Container>
 
   );
