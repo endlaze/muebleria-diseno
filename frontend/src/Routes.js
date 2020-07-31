@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AppNavbar from "./components/Navbar/Navbar";
 import Checkout from "./pages/Checkout";
+import Furniture from "./components/AddFurniture";
 
 
 
@@ -25,6 +26,9 @@ const Routes = () => {
           </Route>
           <PrivateRoute path="/checkout">
             <Checkout/>
+          </PrivateRoute>
+          <PrivateRoute path="/addfurniture">
+            <Furniture/>
           </PrivateRoute>
           <PrivateRoute path="/">
             <ClientHome />

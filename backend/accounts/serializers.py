@@ -82,6 +82,15 @@ class ClientSerializer(UserSerializer):
     id = serializers.ReadOnlyField()
     addresses = AddressSerializer(many=True, read_only=True)
 
+    def create(self, validated_data):
+        client = Client.objects.create(
+            **validated_data
+        )
+        client.set_password(validated_data.pop('password'))
+        client.save()
+
+        return client
+
     class Meta:
         model = Client
         fields = UserSerializer.Meta.fields + ['birthdate', 'addresses']

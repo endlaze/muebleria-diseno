@@ -16,6 +16,7 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PropTypes from 'prop-types';
 import Address from '../components/AddAddress';
 import axios from 'axios'
+import { useHistory } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,18 +40,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register() {
+  let history = useHistory()
   const classes = useStyles();
   const [values, setValues] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    showPassword: false,
     username: '',
     birthday: ''
   });
 
-  const [addressValues, setAddressValues] = useState({country,
+  const [ showPassword, setShowPassword] = useState(false)
+
+  const [addressValues, setAddressValues] = useState({
+    country: '',
     state: '',
     address: '',
     zipCode: ''
@@ -65,7 +69,7 @@ export default function Register() {
   };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setShowPassword(!showPassword);
   };
 
   const handleMouseDownPassword = (event) => {
@@ -81,6 +85,7 @@ export default function Register() {
       password: values.password,
       birthdate: values.birthday
     }).then((res) => {
+      localStorage.setItem('user', res.data)
       submitAddress(res.data.id)
     })
   }
@@ -93,8 +98,7 @@ export default function Register() {
     for (const key in addressValues) {
       valid = valid && addressValues[key]
     }
-    console.log(valid)
-    return valid !== ''
+    return valid !== '' && valid !== 0
   }
 
   const submitAddress = (client_id) => {
@@ -104,6 +108,7 @@ export default function Register() {
       address_line: addressValues.address,
       client_id,
     }).then((res) => {
+      history.replace('/login');
       console.log(res)
     })
   } 
@@ -191,7 +196,7 @@ export default function Register() {
                   required
                   labelWidth={70}
                   name="password"
-                  type={values.showPassword ? 'text' : 'password'}
+                  type={showPassword ? 'text' : 'password'}
                   value={values.password}
                   onChange={handleChange('password')}
                   id="outlined-adornment-password"
@@ -204,7 +209,7 @@ export default function Register() {
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   }

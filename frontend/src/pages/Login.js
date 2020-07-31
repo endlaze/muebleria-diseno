@@ -14,9 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { OutlinedInput, InputLabel, FormControl } from '@material-ui/core';
+import { OutlinedInput, InputLabel, FormControl, Snackbar } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useHistory, useLocation } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,10 +56,19 @@ export default function Login( ) {
   let location = useLocation()
   const classes = useStyles();
   const [values, setValues] = useState({
-    email: '',
+    username: '',
     password: '',
     showPassword: false,
   });
+
+  const [snack, setSnack] = useState({ open: false, message: '', severity: '' })
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnack({ ...snack, open: false });
+  };
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -74,8 +85,20 @@ export default function Login( ) {
   function signIn () {
     
     let { from } = location.state || { from: { pathname: "/" } };
-    localStorage.setItem('user', {email: values.email,hola: 'mundo' })
-    history.replace(from);
+    axios.post('/account/client/login/', {
+      username: values.username,
+      password: values.password
+    }).then((data)=> {
+      if(JSON.stringify(data.data) !== JSON.stringify({})) {
+        console.log(data.data)
+        localStorage.setItem('user', data.data)
+        history.replace(from);
+      } else {
+        setSnack({ open: true, message: 'Contraseña o usuario incorrecto', severity: 'error' })
+      }
+
+    })
+    
 
   }
 
@@ -97,13 +120,13 @@ export default function Login( ) {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Nombre de usuario"
+              name="username"
+              autoComplete="username"
               autoFocus
-              value={values.email}
-              onChange={handleChange('email')}
+              value={values.username}
+              onChange={handleChange('username')}
             />
             <FormControl fullWidth variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
@@ -151,6 +174,11 @@ export default function Login( ) {
           </form>
         </div>
       </Grid>
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 }
