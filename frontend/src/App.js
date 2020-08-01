@@ -3,6 +3,7 @@ import './App.css';
 import ClientHome from './pages/ClientHome/ClientHome'
 import Navbar from './components/Navbar/Navbar'
 import AddWorkplace from './components/AddWorkplace'
+import AddReview from './components/AddReview'
 import AddEmployee from './components/AddEmployee'
 import AddFurniture from './components/AddFurniture'
 import AddPromotion from './components/AddPromotion'
@@ -13,14 +14,16 @@ import Routes from './Routes';
 
 const App = () => {
   return (
-    <AddPromotion/>
-    /*<div className="App">
+    //<AddReview/>
+    //<AddPromotion/>
+    <div className="App">
       
       <StoreProvider>
         <Routes/>
       </StoreProvider>
+
     
-    </div>*/
+    </div>
   );
 }
 

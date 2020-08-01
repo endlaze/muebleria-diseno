@@ -6,18 +6,29 @@ import Alert from '@material-ui/lab/Alert';
 const useStyles = makeStyles(() => ({
   input: {
     margin: '20px 20px 20px 20px',
-    minWidth: 200,
+    minWidth: 1000,
   },
   button: {
     marginLeft: 20
   }
 }));
 
-const Review = () => {
+const Promotion = () => {
   const classes = useStyles();
 
-  const [products, setProducts] = useState([])
-  const [product, setProduct] = useState('')
+  const [grades] = useState([
+      { value: "1" },
+      { value: "2" },
+      { value: "3" },
+      { value: "4" },
+      { value: "5" },
+      { value: "6" },
+      { value: "7" },
+      { value: "8" },
+      { value: "9" },
+      { value: "10" },
+    ])
+  const [grade, setGrade] = useState('')
 
   const [snack, setSnack] = useState({ open: false, message: '', severity: '' })
 
@@ -28,27 +39,14 @@ const Review = () => {
     setSnack({ ...snack, open: false });
   };
 
-  const price = useInput('')
-  const date = useInput('')
+  const comment = useInput('')
 
-
-  useEffect(() => {
-    getMany(setProducts, 'product/furniture/')
-  }, [])
-
-  const getMany = (setter, route) => {
-    axios.get(route).then((res) => {
-      setter(res.data)
-    })
-  }
-
-  const submitPromotion = () => {
-      axios.post(/*DIRECCION DEL POST DE LA PROMOCION ,*/ {
-          price: price.value,
-          date: date.value,
-          product_id: product,
+  const submitReview = () => {
+      axios.post(/*DIRECCION DEL POST DE LA REVIEW ,*/ {
+          comment: comment.value,
+          grade: grade,
       }).then(() => {
-          setSnack({ open: true, severity: 'success', message: 'Promoción creada.' })
+          setSnack({ open: true, severity: 'success', message: 'Reseña envada.' })
       })
   }
 
@@ -57,35 +55,36 @@ const Review = () => {
   }
 
   const validateForm = () => {
-    return (price.value && date.value && product) || false
+    return (comment.value && grade) || false
   }
 
   return (
     <Container>
       <div noValidate autoComplete="off">
-        <TextField label="Precio" variant="outlined" {...price} className={classes.input} />
-        <TextField label="Fecha" variant="outlined" {...date} className={classes.input} />
+
         <FormControl className={classes.input}>
-            <InputLabel>Producto</InputLabel>
+            <InputLabel>Nota</InputLabel>
             <Select
-                value={product}
-                onChange={e => handleChange(setProduct, e.target.value)}
+                value={grade}
+                onChange={e => handleChange(setGrade, e.target.value)}
             >
-                {products.map((product, index) =>
-                    <MenuItem key={index} value={product.id}>{product.description}</MenuItem>
+                {grades.map(grade => 
+                    <MenuItem key={grade.value} value={grade.value}>{grade.value}</MenuItem>
                 )}
             </Select>
         </FormControl>
 
+        <TextField label="Comentario" variant="outlined" {...comment} className={classes.input} />
+
       </div>
       <div>
-        <Button onClick={() => submitPromotion()}
+        <Button onClick={() => submitReview()}
           className={classes.button}
           variant="contained"
           color="primary"
           disabled={validateForm() ? false : true}
         >
-          Agregar pomoción
+          Enviar reseña
         </Button>
       </div>
       <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
@@ -112,4 +111,4 @@ const useInput = (initialValue) => {
   }
 }
 
-export default Review;
+export default Promotion;
