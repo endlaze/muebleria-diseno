@@ -20,13 +20,27 @@ const useStyles = makeStyles({
 const ProductList = () => {
   const classes = useStyles();
   const [furnitures, setFurnitures] = useState([])
-  const productDescription = {id: 1, title: "Mueble", description: "Mueble de madera", price: 60000, available_quantity: 5}
 
   useEffect(() => {
     axios.get('/product/furniture/').then((fornitures) => {
       setFurnitures(fornitures.data)
     })
   }, [])
+
+  const discounts = [{id: 1, product_id: 1, discount_price: 500, finish_date: '2020-12-1'}]
+
+  const applyDiscounts = () => {
+    furnitures.map((furniture)=> (applyDiscount(furniture)))
+  }
+
+  const applyDiscount = (furniture) => {
+    for(let discount in discounts) {
+      if (discount.product_id === furniture.id){
+        return {...furniture, discount_price: discount.discount_price}
+      }
+    }
+    return furniture
+  }
 
   return(
     <>

@@ -60,9 +60,7 @@ export default function Register() {
     zipCode: ''
   })
 
-  useEffect(()=> {
-    console.log(addressValues)
-  }, [addressValues])
+
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -109,7 +107,6 @@ export default function Register() {
       client_id,
     }).then((res) => {
       history.replace('/login');
-      console.log(res)
     })
   } 
 

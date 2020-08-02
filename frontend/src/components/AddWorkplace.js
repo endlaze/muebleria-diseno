@@ -45,7 +45,6 @@ const Workplace = () => {
   }, [])
 
   useEffect(() => {
-    console.log(countries.length)
     if (countries.length !== 0) {
       let statos = countries.find(count => count.id === country)
       statos = statos.states

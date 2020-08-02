@@ -90,8 +90,7 @@ export default function Login( ) {
       password: values.password
     }).then((data)=> {
       if(JSON.stringify(data.data) !== JSON.stringify({})) {
-        console.log(data.data)
-        localStorage.setItem('user', data.data)
+        localStorage.setItem('user', data.data.id)
         history.replace(from);
       } else {
         setSnack({ open: true, message: 'Contraseña o usuario incorrecto', severity: 'error' })
