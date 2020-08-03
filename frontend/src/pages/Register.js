@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import Address from '../components/AddAddress';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom';
-
+import store from 'store'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -83,7 +83,7 @@ export default function Register() {
       password: values.password,
       birthdate: values.birthday
     }).then((res) => {
-      localStorage.setItem('user', res.data)
+      store.set('user', res.data)
       submitAddress(res.data.id)
     })
   }

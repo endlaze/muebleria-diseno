@@ -8,7 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCart from '@material-ui/icons/AddShoppingCart'
-import {useStore} from '../../Store'
+import {useStore} from '../Store'
 const useStyles = makeStyles({
   product: {
     maxWidth: 345,

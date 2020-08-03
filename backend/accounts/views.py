@@ -27,12 +27,21 @@ class ClientViewSet(viewsets.ModelViewSet):
             return response.Response({})
 
 class AuthViewSet(viewsets.ViewSet):
-    @action(detail=True, methods=['post'])
+    @action(detail=False, methods=['post'])
     def login(self, request):
-        user = Client.objects.get(username = request.data.username)
-        if user.check_password(request.data.password):
-            serializer = ClientSerializer(user)
-            return response.Response(serializer.data)
+        login_type = request.data.pop('login_type')
+        user = 'client'
+        if login_type == 'client':
+           user = Client.objects.get(username = request.data.pop('username'))
+           if user.check_password(request.data.pop('password')):
+                serializer = ClientSerializer(user)
+                return response.Response(serializer.data)
+        elif login_type == 'employee':
+            user = Employee.objects.get(username = request.data.pop('username'))
+            if user.check_password(request.data.pop('password')):
+                serializer = EmployeeSerializer(user)
+                return response.Response(serializer.data)
+
         return response.Response({})
 
 

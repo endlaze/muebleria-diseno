@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FormControl, InputLabel, Select, makeStyles, MenuItem } from '@material-ui/core';
-
+import store from 'store'
 const useStyles = makeStyles(() => ({
   input: {
     margin: '20px 20px 20px 20px',
@@ -15,15 +15,13 @@ const AddressPicker = ({ address, setter }) => {
 
   useEffect(() => {
     console.log(address)
-    getMany(setAddresses, 'account/client/')
+    getAddress(setAddresses)
   }, [])
 
-  const getMany = (setter, route) => {
-    const id = localStorage.getItem('user')
-    axios.get(route).then((res) => {
-      const user = res.data.filter((user) => { return parseInt(user.id) === parseInt(id) })
-      setter(user[0].addresses)
-    })
+  const getAddress = (setter) => {
+    const {addresses} = store.get('user')
+    setter(addresses)
+
   }
 
   const handleChange = (setter, value) => {

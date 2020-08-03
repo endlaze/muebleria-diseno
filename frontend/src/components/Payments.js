@@ -19,21 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Payments = () => {
   const classes = useStyles();
-  const [store, dispatch] = useStore();
-  const [address, setAddress] = useStore('')
-
-  const placeOrder = () => {
-    const id = localStorage.getItem('user')
-    axios.post('/order/ord/', {
-      delivered: false,
-      ord_products: store.cart.map((prod) => ({ product_obj: prod.id, quantity: prod.quantity })),
-      client: id
-    })
-  }
-
-  const placeDelivery = (orderId) => {
-
-  }
 
   return (
     <>

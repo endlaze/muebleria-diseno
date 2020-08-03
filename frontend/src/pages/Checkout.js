@@ -5,6 +5,8 @@ import axios from 'axios'
 import Cart from '../components/Cart';
 import AddressPicker from '../components/AddressPicker';
 import Payments from '../components/Payments'
+import browserStore from 'store'
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -25,17 +27,36 @@ const Checkout = () => {
   const [store, dispatch] = useStore();
   const [address, setAddress] = useState('')
 
+  const {login_type} = browserStore.get('user')
+  let history = useHistory();
+
   const placeOrder = () => {
-    const id = localStorage.getItem('user')
+    const { id } = browserStore.get('user')
     axios.post('/order/ord/', {
       delivered: false,
       ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity})),
       client: id
+    }).then((res)=> {
+      placeDelivery(res.data.id)
+      
     })
   }
 
   const placeDelivery = (orderId) => {
-
+    let dateObj = new Date();
+    dateObj.setDate(dateObj.getDate() + 2);
+    let month = dateObj.getUTCMonth() + 1; //months from 1-12
+    let day = dateObj.getUTCDate();
+    let year = dateObj.getUTCFullYear();
+    let newdate = year + "-" + month + "-" + day;
+    axios.post('/order/delivery/', {
+      order: orderId,
+      delivery_date: newdate,
+      status: 1
+    }).then((res) => {
+      dispatch({type: 'clear-cart'})
+      history.replace('/orders');
+    })
   }
 
   return (
@@ -77,10 +98,6 @@ const Checkout = () => {
           </Typography>
           </Box>
         }
-
-
-
-
       </Container>
     </>
   );
