@@ -6,11 +6,14 @@ import Routes from './Routes';
 
 const App = () => {
   return (
+    //<AddReview/>
+    //<AddPromotion/>
     <div className="App">
       
       <StoreProvider>
         <Routes/>
       </StoreProvider>
+
     
     </div>
   );
