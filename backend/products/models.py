@@ -3,7 +3,7 @@ from locations.models import Workplace
 
 
 class Product(models.Model):
-    title =  models.TextField()
+    title = models.TextField()
     description = models.TextField()
     price = models.DecimalField(max_digits=19, decimal_places=2)
     available_quantity = models.IntegerField()
@@ -30,5 +30,29 @@ class Furniture(Product):
     workshop = models.ForeignKey(
         Workplace,
         related_name='furniture',
+        on_delete=models.CASCADE
+    )
+
+
+class FurnitureCombo(Product):
+    workshop = models.ForeignKey(
+        Workplace,
+        related_name='combos',
+        on_delete=models.CASCADE
+    )
+
+
+class FurnitureComboItem(models.Model):
+    quantity = models.IntegerField()
+    materials = models.ManyToManyField(Material)
+
+    furn_type = models.ForeignKey(
+        FurnitureType,
+        on_delete=models.CASCADE
+    )
+
+    furn_combo = models.ForeignKey(
+        FurnitureCombo,
+        related_name='combo_products',
         on_delete=models.CASCADE
     )
