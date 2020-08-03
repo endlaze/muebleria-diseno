@@ -5,13 +5,14 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import ClientHome from "./pages/ClientHome/ClientHome";
+import ClientHome from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AppNavbar from "./components/Navbar/Navbar";
+import AppNavbar from "./components/Navbar";
 import Checkout from "./pages/Checkout";
 import Furniture from "./components/AddFurniture";
-
+import store from 'store'
+import Orders from "./pages/Orders";
 
 
 const Routes = () => {
@@ -29,6 +30,9 @@ const Routes = () => {
           </PrivateRoute>
           <PrivateRoute path="/addfurniture">
             <Furniture/>
+          </PrivateRoute>
+          <PrivateRoute path="/orders">
+            <Orders/>
           </PrivateRoute>
           <PrivateRoute path="/">
             <ClientHome />
@@ -66,6 +70,6 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 const auth = () => {
-  const user = localStorage.getItem('user')
+  const user = store.get('user')
   return user ? true : false
 };

@@ -6,9 +6,9 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/icons/Menu'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import {Link} from 'react-router-dom'
-import './Navbar.css'
-import {useStore} from '../../Store'
+import {Link, useHistory} from 'react-router-dom'
+import {useStore} from '../Store'
+import stores from 'store'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
 const AppNavbar = () => {
   const [store, dispatch] = useStore();
   const classes = useStyles();
+  const history = useHistory();
+
+  const logout = () => {
+    stores.clearAll()
+    history.replace('/login')
+  }
   return(
     <div className={classes.root}>
       <AppBar position="sticky" className={classes.navbar}>
@@ -51,7 +57,7 @@ const AppNavbar = () => {
             Carrito {store.cart.length}
           </Typography> 
           </Link>
-          <Button color="inherit">Salir</Button>
+          <Button onClick={()=>logout()}color="inherit">Salir</Button>
         </Toolbar>
       </AppBar>
     </div>

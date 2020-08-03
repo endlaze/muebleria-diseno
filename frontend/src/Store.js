@@ -15,6 +15,8 @@ const reducer = (state, action) => {
     case 'change-quantity':
       let modified = state.cart.map((element) => element.id===action.id? {...element, quantity: action.quantity} : element )
       return {cart: modified}
+    case 'clear-cart':
+      return {cart: []}
     default:
       return state
     

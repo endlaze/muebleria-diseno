@@ -14,11 +14,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { OutlinedInput, InputLabel, FormControl, Snackbar } from '@material-ui/core';
+import { OutlinedInput, InputLabel, FormControl, Snackbar, FormControlLabel, RadioGroup, Radio, FormLabel } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useHistory, useLocation } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios'
+import store from 'store'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  radio: {
+    display: 'inline'
+  }
 }));
 
 export default function Login( ) {
@@ -59,6 +63,7 @@ export default function Login( ) {
     username: '',
     password: '',
     showPassword: false,
+    login_type: 'client'
   });
 
   const [snack, setSnack] = useState({ open: false, message: '', severity: '' })
@@ -85,13 +90,13 @@ export default function Login( ) {
   function signIn () {
     
     let { from } = location.state || { from: { pathname: "/" } };
-    axios.post('/account/client/login/', {
+    axios.post('/account/auth/login/', {
       username: values.username,
-      password: values.password
+      password: values.password,
+      login_type: values.login_type
     }).then((data)=> {
       if(JSON.stringify(data.data) !== JSON.stringify({})) {
-        console.log(data.data)
-        localStorage.setItem('user', data.data)
+        store.set('user', {...data.data, login_type: values.login_type})
         history.replace(from);
       } else {
         setSnack({ open: true, message: 'Contraseña o usuario incorrecto', severity: 'error' })
@@ -154,6 +159,16 @@ export default function Login( ) {
                     autoComplete="current-password"
                 />
             </FormControl>
+
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Tipo de usuario</FormLabel>
+              <RadioGroup className={classes.radio} value={values.login_type} onChange={handleChange('login_type')}>
+                <FormControlLabel labelPlacement="bottom" value="client" control={<Radio color="primary"/>} label="Cliente" />
+                <FormControlLabel labelPlacement="bottom"  value="employee" control={<Radio color="primary"/>} label="Empleado" />
+                <FormControlLabel labelPlacement="bottom" value="admin" control={<Radio color="primary"/>} label="Gerente" />
+              </RadioGroup>
+            </FormControl>
+
             <Button
               
               fullWidth
@@ -169,6 +184,7 @@ export default function Login( ) {
                 <Link href="/register" variant="body2" >
                   {"No tienes una cuenta? Registrate! "}
                 </Link>
+                
               </Grid>
             </Grid>
           </form>
