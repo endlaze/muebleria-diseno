@@ -70,21 +70,30 @@ const Checkout = () => {
         {store.cart.length > 0 ?
           <div>
             <Cart/>
-            <div className={classes.input}>
-              <Typography variant="subtitle1">
-                Seleccione una direccion
-              </Typography>
-              <AddressPicker address={address} setter={setAddress}/>
-            </div>
-            <div className={classes.input}>
-              <Typography variant="subtitle1">
-                Datos de tarjeta de credito
-              </Typography>
-              <TextField label="Número de tarjeta" variant="outlined" className={classes.input} />
-              <TextField label="Fecha de vencimiento" variant="outlined" className={classes.input} />
-              <TextField label="CVV" variant="outlined" className={classes.input} />
-              <Payments/>
-            </div>
+            {login_type === 'client' ? 
+              <>
+                <div className={classes.input}>
+                  <Typography variant="subtitle1">
+                    Seleccione una direccion
+                  </Typography>
+                  <AddressPicker address={address} setter={setAddress}/>
+                </div>
+                <div className={classes.input}>
+                  <Typography variant="subtitle1">
+                    Datos de tarjeta de credito
+                  </Typography>
+                  <TextField label="Número de tarjeta" variant="outlined" className={classes.input} />
+                  <TextField label="Fecha de vencimiento" variant="outlined" className={classes.input} />
+                  <TextField label="CVV" variant="outlined" className={classes.input} />
+                  
+                </div>
+              </>
+              :
+              <div className={classes.input}>
+                <Payments/>
+              </div>
+            }
+            
             <div>
               <Button variant="contained" color="primary" onClick={()=> placeOrder()}>
                 Pagar
