@@ -9,7 +9,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Furniture
-        fields = ['id', 'title', 'description', 'price', 'available_quantity']
+        fields = ['id', 'title', 'description', 'price', 'available_quantity', 'picture']
 
 
 class MaterialSerializer(serializers.ModelSerializer):
@@ -53,7 +53,7 @@ class FurnitureSerializer(ProductSerializer):
         model = Furniture
         fields = ProductSerializer.Meta.fields + \
             ['furn_type', 'workshop', 'materials',
-                'furn_type_id', 'workshop_id', 'materials_ids', 'picture']
+                'furn_type_id', 'workshop_id', 'materials_ids']
 
     def create(self, validated_data):
         furn_type_id = validated_data.pop('furn_type_id')
