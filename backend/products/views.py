@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Material, FurnitureType, Furniture, FurnitureCombo
-from .serializers import MaterialSerializer, FurnitureTypeSerializer, FurnitureSerializer, FurnitureComboSerializer
+from .models import Material, FurnitureType, Furniture, FurnitureCombo, Promotion
+from .serializers import MaterialSerializer, FurnitureTypeSerializer, FurnitureSerializer, FurnitureComboSerializer, PromotionSerializer
 
 
 class MaterialViewSet(viewsets.ModelViewSet):
@@ -21,3 +21,7 @@ class FurnitureViewSet(viewsets.ModelViewSet):
 class FurnitureComboViewSet(viewsets.ModelViewSet):
     serializer_class = FurnitureComboSerializer
     queryset = FurnitureCombo.objects.all()
+
+class PromotionViewSet(viewsets.ModelViewSet):
+    serializer_class = PromotionSerializer
+    queryset = Promotion.objects.all()

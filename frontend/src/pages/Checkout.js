@@ -32,7 +32,7 @@ const Checkout = () => {
 
   const placeOrder = () => {
     const { id } = browserStore.get('user')
-    axios.post('/order/ord/', {
+    axios.post('/order/online/', {
       delivered: false,
       ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity})),
       client: id

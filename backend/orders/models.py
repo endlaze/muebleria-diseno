@@ -1,16 +1,31 @@
 from django.db import models
 from products.models import Product
-from accounts.models import Client
+from accounts.models import Client, Employee
+from locations.models import Workplace
 
 
 class Order(models.Model):
     date = models.DateTimeField(editable=False)
     delivered = models.BooleanField()
+
+
+class OnlineOrder(Order):
     client = models.ForeignKey(
         Client,
         on_delete=models.CASCADE,
         related_name='orders'
     )
+
+class OnSiteOrder(Order):
+    client_id = models.TextField()
+    client_email = models.TextField()
+    client_name = models.TextField()
+    employee = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name='orders'
+    )
+    branch = models.ForeignKey(Workplace, on_delete=models.CASCADE, related_name='brach_orders')
 
 
 class OrderProduct (models.Model):
@@ -25,6 +40,8 @@ class OrderProduct (models.Model):
     )
     quantity = models.IntegerField()
     backorder_quantity = models.IntegerField()
+    discount = models.FloatField() 
+    selling_price = models.DecimalField(max_digits=19, decimal_places=2)
 
 
 class Delivery(models.Model):

@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Product = ({title, description, price, available_quantity, product}, props) => {
+const Product = ({title, description, price, available_quantity, product, selling_price}, props) => {
   const [store, dispatch] = useStore();
   const classes = useStyles();
   return (
@@ -32,11 +32,17 @@ const Product = ({title, description, price, available_quantity, product}, props
           title={title}
         />
         <CardContent>
+        <Typography gutterBottom variant="h5" component="h2">
+            {product.id}
+          </Typography>
           <Typography gutterBottom variant="h5" component="h2">
             {title}
           </Typography>
           <Typography gutterBottom variant="h5" component="h2">
             {price}
+          </Typography>
+          <Typography gutterBottom variant="h5" component="h2">
+            {selling_price}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {description}

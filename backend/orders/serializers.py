@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils import timezone
-from .models import OrderProduct, Order, Delivery, Review
+from .models import OrderProduct, Order, Delivery, Review, OnlineOrder, OnSiteOrder
 from products.models import Product
 from products.serializers import ProductSerializer
 import logging
@@ -30,26 +30,72 @@ class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
         fields = ['id', 'product', 'product_obj',
-                  'backorder_quantity', 'quantity']
+                  'backorder_quantity', 'quantity', 'discount', 'selling_price']
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OnlineOrderSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     date = serializers.DateTimeField(read_only=True)
     ord_products = OrderProductSerializer(many=True)
 
     class Meta:
-        model = Order
+        model = OnlineOrder
         fields = ['id', 'date', 'delivered', 'ord_products', 'client']
 
     def create(self, validated_data):
 
         ord_products = validated_data.pop('ord_products')
 
-        order = Order.objects.create(
+        order = OnlineOrder.objects.create(
             date=timezone.now(),
             delivered=validated_data.pop('delivered'),
             client=validated_data.pop('client')
+        )
+
+        for prod in ord_products:
+            self.createOrderProduct(order, **prod)
+
+        return order
+
+    def createOrderProduct(self, order, product_obj, quantity):
+        rem_prod_quant = product_obj.available_quantity - quantity
+
+        product_obj.available_quantity = 0 if (
+            rem_prod_quant <= 0
+        ) else rem_prod_quant
+
+        product_obj.save()
+
+        backord_quant = 0 if (rem_prod_quant >= 0) else rem_prod_quant
+
+        new_order_product = OrderProduct.objects.create(
+            order=order,
+            product=product_obj,
+            quantity=quantity,
+            backorder_quantity=backord_quant
+        )
+
+        return new_order_product
+
+class OnSiteOrderSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    date = serializers.DateTimeField(read_only=True)
+    ord_products = OrderProductSerializer(many=True)
+
+    class Meta:
+        model = OnSiteOrder
+        fields = ['id', 'date', 'delivered', 'ord_products','employee', 'client_id', 'client_email', 'branch']
+
+    def create(self, validated_data):
+
+        ord_products = validated_data.pop('ord_products')
+
+        order = OnSiteOrder.objects.create(
+            date=timezone.now(),
+            delivered=validated_data.pop('delivered'),
+            employee=validated_data.pop('employee'),
+            client_email=validated_data.pop('client_email'),
+            client_id=validated_data.pop('client_id')
         )
 
         for prod in ord_products:

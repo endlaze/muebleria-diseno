@@ -28,7 +28,7 @@ const Orders = () => {
   })
 
   useEffect(()=> {
-    getOrders('/order/ord/')
+    getOrders('/order/online/')
   }, [])
 
   const getOrders = (route) => {

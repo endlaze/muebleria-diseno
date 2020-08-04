@@ -19,26 +19,46 @@ const useStyles = makeStyles({
 const ProductList = () => {
   const classes = useStyles();
   const [furnitures, setFurnitures] = useState([])
+  const [stock, setStock] = useState([])
+  const [promotions, setPromotions] = useState([])
 
   useEffect(() => {
     axios.get('/product/furniture/').then((fornitures) => {
-      setFurnitures(fornitures.data)
+      setStock(fornitures.data)
+    })
+    axios.get('/product/promotion/').then((promotions) => {
+      setPromotions(promotions.data)
     })
   }, [])
 
-  const discounts = [{id: 1, product_id: 1, discount_price: 500, finish_date: '2020-12-1'}]
+
+  useEffect(() => {
+    if(stock.length !== 0) {
+      applyDiscounts()
+    }
+  }, [stock, promotions])
+
 
   const applyDiscounts = () => {
-    furnitures.map((furniture)=> (applyDiscount(furniture)))
+    setFurnitures(stock.map((furniture) => { 
+      let furn =   applyDiscount(furniture) 
+      return furn
+      }))
   }
 
   const applyDiscount = (furniture) => {
-    for(let discount in discounts) {
-      if (discount.product_id === furniture.id){
-        return {...furniture, discount_price: discount.discount_price}
-      }
-    }
-    return furniture
+    let discount = 0
+    let selling = parseInt(furniture.price)
+    let promotion = promotions.find((promotion) => parseInt(promotion.product) === parseInt(furniture.id) &&
+    new Date(promotion.final_date + "T00:00:00") >= new Date())
+
+    if (promotion !== undefined) {
+      discount = parseFloat(promotion.discount)
+      selling = selling * (1 - discount)
+    } 
+
+    return {...furniture, discount: discount, selling_price: selling}
+
   }
 
   return(
@@ -47,7 +67,7 @@ const ProductList = () => {
         <Typography variant="h2" gutterBottom> Nuestros productos</Typography>
         <Box display="flex" flexWrap="wrap" justifyContent="center" className={classes.productContainer}>
           {furnitures.map((product, index) =>
-            <Product key={index} {...product} product={product}></Product>
+            <Product key={index} {...product} product={product} selling_price={product.selling_price}></Product>
           )}
         </Box>
       </Container>
