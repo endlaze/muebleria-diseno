@@ -40,7 +40,7 @@ class OnlineOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OnlineOrder
-        fields = ['id', 'date', 'delivered', 'ord_products', 'client']
+        fields = ['id', 'date', 'delivered', 'ord_products', 'client', 'final_selling']
 
     def create(self, validated_data):
 
@@ -49,7 +49,8 @@ class OnlineOrderSerializer(serializers.ModelSerializer):
         order = OnlineOrder.objects.create(
             date=timezone.now(),
             delivered=validated_data.pop('delivered'),
-            client=validated_data.pop('client')
+            client=validated_data.pop('client'),
+            final_selling=validated_data.pop('final_selling')
         )
 
         for prod in ord_products:
@@ -86,7 +87,7 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OnSiteOrder
-        fields = ['id', 'date', 'delivered', 'ord_products','employee', 'client_id', 'client_email', 'branch']
+        fields = ['id', 'date', 'delivered', 'ord_products','employee', 'client_id', 'client_email', 'branch', 'final_selling']
 
     def create(self, validated_data):
 
@@ -98,7 +99,8 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
             employee=validated_data.pop('employee'),
             client_email=validated_data.pop('client_email'),
             client_id=validated_data.pop('client_id'),
-            branch=validated_data.pop('branch')
+            branch=validated_data.pop('branch'),
+            final_selling=validated_data.pop('final_selling')
         )
 
 

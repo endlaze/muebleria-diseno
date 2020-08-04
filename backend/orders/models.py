@@ -7,6 +7,7 @@ from locations.models import Workplace
 class Order(models.Model):
     date = models.DateTimeField(editable=False)
     delivered = models.BooleanField()
+    final_selling = models.DecimalField(max_digits=19, decimal_places=2)
 
 
 class OnlineOrder(Order):

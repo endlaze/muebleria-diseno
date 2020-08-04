@@ -5,10 +5,11 @@ import FurnitureForm from '../components/AddFurniture'
 import WorkplaceForm from '../components/AddWorkplace'
 import EmployeeForm from '../components/AddEmployee'
 import store from 'store'
+import Report from '../components/Report'
 
 const ClientHome = () => {
 	console.log(store.get('user'))
-	const {login_type} = store.get('user')
+	const {login_type, workplace} = store.get('user')
 	console.log(login_type)
 	return (
 			<>
@@ -22,7 +23,7 @@ const ClientHome = () => {
 					<EmployeeForm/>
 					<FurnitureForm/>
 					<WorkplaceForm/>
-
+					<Report branch={workplace.id}></Report>
 				</>
 				}
 				
