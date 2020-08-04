@@ -8,11 +8,11 @@ import store from 'store'
 
 const ClientHome = () => {
 	console.log(store.get('user'))
-	const loginType = store.get('login_type')
-
+	const {login_type} = store.get('user')
+	console.log(login_type)
 	return (
 			<>
-				{loginType !== 'admin' ?
+				{login_type !== 'manager' ?
 					<>
 					<Header/>
 					<ProductList></ProductList>

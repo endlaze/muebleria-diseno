@@ -13,6 +13,7 @@ import Checkout from "./pages/Checkout";
 import Furniture from "./components/AddFurniture";
 import store from 'store'
 import Orders from "./pages/Orders";
+import GeneralManager from "./pages/GeneralManager";
 
 
 const Routes = () => {
@@ -34,6 +35,9 @@ const Routes = () => {
           <PrivateRoute path="/orders">
             <Orders/>
           </PrivateRoute>
+          <Route path="/admin">
+            <GeneralManager />
+          </Route>
           <PrivateRoute path="/">
             <ClientHome />
           </PrivateRoute>

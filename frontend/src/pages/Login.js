@@ -165,7 +165,7 @@ export default function Login( ) {
               <RadioGroup className={classes.radio} value={values.login_type} onChange={handleChange('login_type')}>
                 <FormControlLabel labelPlacement="bottom" value="client" control={<Radio color="primary"/>} label="Cliente" />
                 <FormControlLabel labelPlacement="bottom"  value="employee" control={<Radio color="primary"/>} label="Empleado" />
-                <FormControlLabel labelPlacement="bottom" value="admin" control={<Radio color="primary"/>} label="Gerente" />
+                <FormControlLabel labelPlacement="bottom" value="manager" control={<Radio color="primary"/>} label="Gerente" />
               </RadioGroup>
             </FormControl>
 

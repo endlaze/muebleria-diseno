@@ -13,7 +13,6 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { FormControl, OutlinedInput, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import PropTypes from 'prop-types';
 import Address from '../components/AddAddress';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom';

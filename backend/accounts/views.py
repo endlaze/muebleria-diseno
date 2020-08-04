@@ -37,7 +37,12 @@ class AuthViewSet(viewsets.ViewSet):
                 serializer = ClientSerializer(user)
                 return response.Response(serializer.data)
         elif login_type == 'employee':
-            user = Employee.objects.get(username = request.data.pop('username'))
+            user = Employee.objects.get(username = request.data.pop('username') , emp_type__id=1)
+            if user.check_password(request.data.pop('password')):
+                serializer = EmployeeSerializer(user)
+                return response.Response(serializer.data)
+        elif login_type == 'manager':
+            user = Employee.objects.get(username = request.data.pop('username'), emp_type__id= 2)
             if user.check_password(request.data.pop('password')):
                 serializer = EmployeeSerializer(user)
                 return response.Response(serializer.data)
