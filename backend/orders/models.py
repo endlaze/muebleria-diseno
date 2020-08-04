@@ -16,6 +16,7 @@ class OnlineOrder(Order):
         related_name='orders'
     )
 
+
 class OnSiteOrder(Order):
     client_id = models.TextField()
     client_email = models.TextField()
@@ -25,7 +26,8 @@ class OnSiteOrder(Order):
         on_delete=models.CASCADE,
         related_name='orders'
     )
-    branch = models.ForeignKey(Workplace, on_delete=models.CASCADE, related_name='brach_orders')
+    branch = models.ForeignKey(
+        Workplace, on_delete=models.CASCADE, related_name='brach_orders')
 
 
 class OrderProduct (models.Model):
@@ -40,7 +42,7 @@ class OrderProduct (models.Model):
     )
     quantity = models.IntegerField()
     backorder_quantity = models.IntegerField()
-    discount = models.FloatField() 
+    discount = models.FloatField()
     selling_price = models.DecimalField(max_digits=19, decimal_places=2)
 
 
@@ -57,7 +59,7 @@ class Delivery(models.Model):
     ORDER_STATUSES = (
         (1, 'En proceso'),
         (2, 'En camino'),
-        (3, 'Entregado')
+        (3, 'Entregada')
     )
 
     status = models.IntegerField(choices=ORDER_STATUSES)

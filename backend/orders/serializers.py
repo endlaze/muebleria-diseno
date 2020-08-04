@@ -7,9 +7,12 @@ import logging
 
 
 class DeliverySerializer(serializers.ModelSerializer):
+    status_caption = serializers.CharField(
+        source='get_status_display', read_only=True)
+
     class Meta:
         model = Delivery
-        fields = ['order', 'delivery_date', 'status']
+        fields = ['order', 'delivery_date', 'status', 'status_caption']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -37,10 +40,12 @@ class OnlineOrderSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     date = serializers.DateTimeField(read_only=True)
     ord_products = OrderProductSerializer(many=True)
+    delivery = DeliverySerializer(read_only=True)
 
     class Meta:
         model = OnlineOrder
-        fields = ['id', 'date', 'delivered', 'ord_products', 'client']
+        fields = ['id', 'date', 'delivered',
+                  'ord_products', 'client', 'delivery']
 
     def create(self, validated_data):
 
@@ -73,11 +78,12 @@ class OnlineOrderSerializer(serializers.ModelSerializer):
             product=product_obj,
             quantity=quantity,
             backorder_quantity=backord_quant,
-            discount= discount,
+            discount=discount,
             selling_price=selling_price
         )
 
         return new_order_product
+
 
 class OnSiteOrderSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
@@ -86,7 +92,8 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OnSiteOrder
-        fields = ['id', 'date', 'delivered', 'ord_products','employee', 'client_id', 'client_email', 'branch']
+        fields = ['id', 'date', 'delivered', 'ord_products',
+                  'employee', 'client_id', 'client_email', 'branch']
 
     def create(self, validated_data):
 
@@ -100,7 +107,6 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
             client_id=validated_data.pop('client_id'),
             branch=validated_data.pop('branch')
         )
-
 
         for prod in ord_products:
             self.createOrderProduct(order, **prod)
@@ -123,7 +129,7 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
             product=product_obj,
             quantity=quantity,
             backorder_quantity=backord_quant,
-            discount= discount,
+            discount=discount,
             selling_price=selling_price
         )
 
