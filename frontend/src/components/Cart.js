@@ -17,10 +17,9 @@ const useStyles = makeStyles ((theme) => ({
   }
 }));
 
-const Cart = () => {
+const Cart = ({total, setTotal}) => {
   const classes = useStyles()
   const [store, dispatch] = useStore()
-  const [total, setTotal] = useState(0);
 
   const handleProductChange = (value, id) => {
     dispatch({ type: 'change-quantity', quantity: value, id: id })

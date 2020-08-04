@@ -28,6 +28,7 @@ const Checkout = () => {
   const [address, setAddress] = useState('')
   const email = useInput('')
   const name = useInput('')
+  const [total, setTotal] = useState(0)
 
   const {login_type} = browserStore.get('user')
   let history = useHistory();
@@ -38,7 +39,8 @@ const Checkout = () => {
       axios.post('/order/online/', {
         delivered: false,
         ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity, selling_price: prod.selling_price, discount: prod.discount})),
-        client: id
+        client: id,
+        final_selling: total
       }).then((res)=> {
         placeDelivery(res.data.id)
         
@@ -50,7 +52,8 @@ const Checkout = () => {
         employee: id,
         branch: workplace.id,
         client_id: name.value,
-        client_email: email.value
+        client_email: email.value,
+        final_selling: total
       }).then((res)=> {
         dispatch({type: 'clear-cart'})
         history.replace('/orders');
@@ -86,7 +89,7 @@ const Checkout = () => {
         </Box>
         {store.cart.length > 0 ?
           <div>
-            <Cart/>
+            <Cart total={total} setTotal={setTotal}/>
             {login_type === 'client' ? 
               <>
                 <div className={classes.input}>

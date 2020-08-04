@@ -11,7 +11,9 @@ class ReportViewSet(viewsets.ViewSet):
     branch = request.data.pop('branch')
     orders = []
     if branch != '':
-      orders = OnSiteOrder.objects.filter(branch=branch)
+      #return response.Response({"caca":int(branch) })
+      orders = OnSiteOrderSerializer(OnSiteOrder.objects.filter(branch=int(branch)), many=True).data
+      
       #orders = OnSiteOrderSerializer(orders, many=True).data
     else:
       on_site_orders = OnSiteOrderSerializer(OnSiteOrder.objects.all(), many=True).data
