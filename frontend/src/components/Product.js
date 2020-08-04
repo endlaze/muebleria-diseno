@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCart from '@material-ui/icons/AddShoppingCart'
 import {useStore} from '../Store'
+import { Paper } from '@material-ui/core';
 const useStyles = makeStyles({
   product: {
     maxWidth: 345,
@@ -16,6 +17,13 @@ const useStyles = makeStyles({
     marginTop: '10px',
     marginBottom: '10px'
   },
+  priceBefore: {
+    textDecoration: "line-through",
+    margin: '0 20px 0 0'
+  },
+  flex: {
+    display: 'flex'
+  }
 });
 
 const Product = ({title, description, price, available_quantity, product, selling_price}, props) => {
@@ -38,12 +46,23 @@ const Product = ({title, description, price, available_quantity, product, sellin
           <Typography gutterBottom variant="h5" component="h2">
             {title}
           </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
-            {price}
-          </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
-            {selling_price}
-          </Typography>
+          {selling_price < price ? 
+          <div className={classes.flex}>
+            <Typography className={classes.priceBefore} gutterBottom variant="h5" component="h2">
+              {price}
+            </Typography>
+            <Typography color="secondary" gutterBottom variant="h5" component="h2">
+              {selling_price}
+            </Typography>
+          </div>
+          :
+
+            <Typography gutterBottom variant="h5" component="h2">
+              {price}
+            </Typography>
+
+          }
+          
           <Typography variant="body2" color="textSecondary" component="p">
             {description}
           </Typography>

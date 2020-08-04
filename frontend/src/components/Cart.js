@@ -37,7 +37,7 @@ const Cart = () => {
   useEffect(() => {
     let tot = 0
     store.cart.forEach(product => {
-      tot += parseInt(product.price) * parseInt(product.quantity)
+      tot += parseInt(product.selling_price) * parseInt(product.quantity)
     });
     setTotal(tot)
   }, [store])
@@ -66,7 +66,7 @@ const Cart = () => {
                   label="Cantidad" variant="outlined" className={classes.input} />
               </TableCell>
               <TableCell>
-                {parseInt(product.price) * parseInt(product.quantity)}
+                {parseInt(product.selling_price) * parseInt(product.quantity)}
               </TableCell>
               <TableCell>
                 <Button onClick={() => dispatch({ type: 'delete-from-cart', id: product.id })}

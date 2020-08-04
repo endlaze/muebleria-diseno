@@ -26,20 +26,37 @@ const Checkout = () => {
   const classes = useStyles();
   const [store, dispatch] = useStore();
   const [address, setAddress] = useState('')
+  const email = useInput('')
+  const name = useInput('')
 
   const {login_type} = browserStore.get('user')
   let history = useHistory();
 
   const placeOrder = () => {
-    const { id } = browserStore.get('user')
-    axios.post('/order/online/', {
-      delivered: false,
-      ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity})),
-      client: id
-    }).then((res)=> {
-      placeDelivery(res.data.id)
-      
-    })
+    const { id, login_type, workplace } = browserStore.get('user')
+    if (login_type === 'client') {
+      axios.post('/order/online/', {
+        delivered: false,
+        ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity, selling_price: prod.selling_price, discount: prod.discount})),
+        client: id
+      }).then((res)=> {
+        placeDelivery(res.data.id)
+        
+      })
+    } else {
+      axios.post('/order/onsite/', {
+        delivered: true,
+        ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity, selling_price: prod.selling_price, discount: prod.discount})),
+        employee: id,
+        branch: workplace.id,
+        client_id: name.value,
+        client_email: email.value
+      }).then((res)=> {
+        dispatch({type: 'clear-cart'})
+        history.replace('/orders');
+      })
+    }
+    
   }
 
   const placeDelivery = (orderId) => {
@@ -89,9 +106,20 @@ const Checkout = () => {
                 </div>
               </>
               :
-              <div className={classes.input}>
-                <Payments/>
-              </div>
+              <>
+                <div className={classes.input}>
+                  <Typography variant="subtitle1">
+                    Forma de pago
+                  </Typography>
+                  <TextField {...name} label="Nombre de cliente" variant="outlined" className={classes.input} />
+                  <TextField {...email} label="Email del cliente" variant="outlined" className={classes.input} />
+                </div>
+                
+                <div className={classes.input}>
+                  <Payments/>
+                </div>
+                
+              </>
             }
             
             <div>
@@ -110,6 +138,18 @@ const Checkout = () => {
       </Container>
     </>
   );
+}
+
+const useInput = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
+
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+  return {
+    value: value,
+    onChange: handleChange
+  }
 }
 
 export default Checkout;

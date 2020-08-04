@@ -57,7 +57,7 @@ class OnlineOrderSerializer(serializers.ModelSerializer):
 
         return order
 
-    def createOrderProduct(self, order, product_obj, quantity):
+    def createOrderProduct(self, order, product_obj, quantity, discount, selling_price):
         rem_prod_quant = product_obj.available_quantity - quantity
 
         product_obj.available_quantity = 0 if (
@@ -72,7 +72,9 @@ class OnlineOrderSerializer(serializers.ModelSerializer):
             order=order,
             product=product_obj,
             quantity=quantity,
-            backorder_quantity=backord_quant
+            backorder_quantity=backord_quant,
+            discount= discount,
+            selling_price=selling_price
         )
 
         return new_order_product
@@ -95,15 +97,17 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
             delivered=validated_data.pop('delivered'),
             employee=validated_data.pop('employee'),
             client_email=validated_data.pop('client_email'),
-            client_id=validated_data.pop('client_id')
+            client_id=validated_data.pop('client_id'),
+            branch=validated_data.pop('branch')
         )
+
 
         for prod in ord_products:
             self.createOrderProduct(order, **prod)
 
         return order
 
-    def createOrderProduct(self, order, product_obj, quantity):
+    def createOrderProduct(self, order, product_obj, quantity, discount, selling_price):
         rem_prod_quant = product_obj.available_quantity - quantity
 
         product_obj.available_quantity = 0 if (
@@ -118,7 +122,9 @@ class OnSiteOrderSerializer(serializers.ModelSerializer):
             order=order,
             product=product_obj,
             quantity=quantity,
-            backorder_quantity=backord_quant
+            backorder_quantity=backord_quant,
+            discount= discount,
+            selling_price=selling_price
         )
 
         return new_order_product
