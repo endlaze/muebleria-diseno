@@ -74,8 +74,15 @@ const Furniture = () => {
   useEffect(() => {
     getMany(setBaseMaterials, 'product/material/')
     getMany(setFurnitureTypes, 'product/furniture_type/')
-    getMany(setWorkplaces, '/location/workplace/')
+    getWorkplaces()
   }, [])
+
+  const getWorkplaces = () => {
+    axios.get('/location/workplace/').then((workplaces)=>{
+      let filtered = workplaces.data.filter((wp) => wp.wp_type === 1)
+      setWorkplaces(filtered)
+    })
+  }
 
   const getMany = (setter, route) => {
     axios.get(route).then((res) => {

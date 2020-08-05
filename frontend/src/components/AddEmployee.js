@@ -138,7 +138,7 @@ const Employee = () => {
             onChange={handleWorkplaceChange}
           >
             {worplaces.map((wp, index) => 
-              <MenuItem key={index} value={wp.id}>{wp.wp_type === "1"? "Sucursal " : "Taller "}{wp.state.name}</MenuItem>
+              <MenuItem key={index} value={wp.id}>{wp.wp_type === 1? "Sucursal " : "Taller "}{wp.state.name}</MenuItem>
             )}
           </Select>
         </FormControl>

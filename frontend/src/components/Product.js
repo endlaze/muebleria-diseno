@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Product = ({title, description, price, available_quantity, product, selling_price}, props) => {
+const Product = ({title, description, price, available_quantity, product, selling_price, showModal, products}, props) => {
   const [store, dispatch] = useStore();
   const classes = useStyles();
   return (
@@ -69,6 +69,7 @@ const Product = ({title, description, price, available_quantity, product, sellin
           <Typography variant="body2" component="p">
             Cantidad disponible: {available_quantity}
           </Typography>
+          
         </CardContent>
       </CardActionArea>
       <CardActions>
@@ -79,6 +80,7 @@ const Product = ({title, description, price, available_quantity, product, sellin
         startIcon={<AddShoppingCart/>}>
           Agregar al carrito
         </Button>
+        <Button onClick={()=> showModal(products)}>Hola</Button>
       </CardActions>
     </Card>
   );

@@ -46,7 +46,6 @@ const Report = ({ branch }) => {
     axios.post('/report/all/find_report/', {
       branch: branch
     }).then((res) => {
-      console.log(res.data)
       let orders = res.data
       let thisData = _.map(orders, (order) => {
         let date = new Date(order.date)
@@ -56,22 +55,17 @@ const Report = ({ branch }) => {
 
       thisData = _.groupBy(thisData, 'date')
       thisData = _.map(thisData, (date) => {
-        console.log(date[0].date)
-        console.log(`${date[0].date}T00:00:00`)
-        console.log(new Date(`${date[0].date}T00:00:00`))
         return ({
           date: new Date(date[0].rawDate).toLocaleDateString(),
           total: _.sumBy(date, 'selling'),
         })
       } )
-      console.log(thisData)
       let lab = []
       let dat = []
       thisData.forEach((data) => {
         lab.push(data.date)
         dat.push(data.total)
       })
-      console.log(dat)
       setLabels(lab)
       setData(dat)
 
