@@ -8,6 +8,10 @@ class EmployeeType(models.Model):
     min_salary = models.DecimalField(max_digits=19, decimal_places=2)
     max_salary = models.DecimalField(max_digits=19, decimal_places=2)
 
+class Commission(models.Model):
+    emp_type = models.ForeignKey(EmployeeType, related_name='commission', on_delete=models.CASCADE)
+    percentage = models.FloatField()
+
 
 class Employee(User):
     emp_type = models.ForeignKey(EmployeeType, on_delete=models.CASCADE)

@@ -27,6 +27,7 @@ const ProductList = () => {
   const [promotions, setPromotions] = useState([])
   const [products, setProducts] = useState([])
   const [modal, setModal] = useState(false)
+  const [product, setProduct] = useState(0)
 
   useEffect(() => {
     axios.get('/product/furniture/').then((fornitures) => {
@@ -73,8 +74,9 @@ const ProductList = () => {
 
   }
 
-  const showModal = (products) => {
+  const showModal = (products, productId) => {
     setProducts(products)
+    setProduct(productId)
     setModal(true)
   }
 
@@ -100,7 +102,7 @@ const ProductList = () => {
           </>
           )}
         </Box>
-        <ShowProduct closeModal={closeModal} show={modal} products={products}/>
+        <ShowProduct product={product} closeModal={closeModal} show={modal} products={products}/>
       </Container>
     </>
     

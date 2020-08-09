@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import EmployeeType, Employee, Client, Address
+from .models import EmployeeType, Employee, Client, Address, Commission
 from locations.serializers import WorkplaceSerializer, StateSerializer
 from locations.models import Workplace, State
 
@@ -16,13 +16,38 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name',
                   'last_name', 'email', 'password']
 
-
-class EmployeeTypeSerializer(serializers.ModelSerializer):
+class CommissionSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
 
     class Meta:
+        model = Commission
+        fields = ['id', 'percentage' ]
+
+class EmployeeTypeSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    commission = CommissionSerializer(many=True)
+    #percentage = serializers.FloatField(source='commission.percentage')
+    #tracks = serializers.RelatedField(many=True)
+
+
+    class Meta:
         model = EmployeeType
-        fields = ['id', 'desc', 'min_salary', 'max_salary']
+        fields = ['id', 'desc', 'min_salary', 'max_salary', 'commission'] 
+
+    
+    def create(self, validated_data):
+        commission_data=validated_data.pop('commission')[0]
+        desc=validated_data.pop('desc')
+        max_salary=validated_data.pop('max_salary')
+        min_salary=validated_data.pop('min_salary')
+
+        employeeType = EmployeeType.objects.create(desc=desc, min_salary=min_salary, max_salary=max_salary)
+        if commission_data['percentage'] != 0:
+            Commission.objects.create(emp_type=employeeType, percentage=commission_data['percentage'] )
+
+        return employeeType
+
+
 
 
 class EmployeeSerializer(UserSerializer):

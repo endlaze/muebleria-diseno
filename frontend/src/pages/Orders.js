@@ -125,7 +125,7 @@ const Orders = () => {
                 <Typography><span className={classes.fontBold}>Producto: </span> {prod.product.title}</Typography>
                 <Typography><span className={classes.fontBold}>Cantidad comprada: </span> {prod.quantity}</Typography>
                 <Typography><span className={classes.fontBold}>Cantidad en backorder: </span>{prod.backorder_quantity * -1}</Typography>
-                <Button variant="contained" className={classes.reviewBTN} onClick={() => changeModalState(prod.id, order.id)}>Calificar producto</Button>
+                <Button variant="contained" className={classes.reviewBTN} onClick={() => changeModalState(prod.product.id, order.id)}>Calificar producto</Button>
               </Grid>
             )}
           </Grid>

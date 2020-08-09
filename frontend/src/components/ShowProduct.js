@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import AddShoppingCart from '@material-ui/icons/AddShoppingCart'
 import { useStore } from '../Store'
 import { Paper, Dialog, Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core';
+import axios from 'axios'
 const useStyles = makeStyles({
   product: {
     maxWidth: 345,
@@ -32,15 +33,27 @@ const useStyles = makeStyles({
 },
 });
 
-const ShowProduct = ({ products, show, closeModal }, props) => {
+const ShowProduct = ({ products, show, closeModal, product }, props) => {
   const [store, dispatch] = useStore();
+  const [reviews, setReviews] = useState([])
   const classes = useStyles();
 
   const [itemsTCols, setItemsTableCols] = useState([
     { title: 'Cantidad' },
     { title: 'Tipo de mueble' },
     { title: 'Materiales' },
-])
+  ])
+
+  useEffect(() => {
+    axios.get('/order/review/').then((res) => {
+      let filtered = res.data.filter((rev) => parseInt(rev.product) === parseInt(product))
+      console.log(res.data)
+      console.log(filtered)
+      setReviews(filtered)
+    })
+    console.log("HELLO MOFO")
+  }, [product])
+
 
   return (
     <>
@@ -71,6 +84,12 @@ const ShowProduct = ({ products, show, closeModal }, props) => {
             )}
           </TableBody>
         </Table>
+        {reviews.map((rev) => (
+          <>
+          <Typography>{rev.rating}</Typography>
+          <Typography>{rev.comment}</Typography>
+          </>
+        ))}
       </Dialog>
     </>
   );

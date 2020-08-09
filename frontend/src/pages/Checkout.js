@@ -112,7 +112,7 @@ const Checkout = () => {
               <>
                 <div className={classes.input}>
                   <Typography variant="subtitle1">
-                    Forma de pago
+                    Datos del cliente
                   </Typography>
                   <TextField {...name} label="Nombre de cliente" variant="outlined" className={classes.input} />
                   <TextField {...email} label="Email del cliente" variant="outlined" className={classes.input} />

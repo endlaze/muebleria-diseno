@@ -36,8 +36,9 @@ const useStyles = makeStyles(() => ({
   
 }));
 
-const Promotion = (props) => {
+const AddReviewModal = (props) => {
   const { open, onClose, product, idOrder } = props
+  console.log(product)
   const classes = useStyles();
   const [added, setAdded] = useState(false)
 
@@ -136,4 +137,4 @@ const useInput = (initialValue) => {
   }
 }
 
-export default Promotion;
+export default AddReviewModal;
