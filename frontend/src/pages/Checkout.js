@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { Container, Typography, Paper, TextField, makeStyles, Button, Box, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Container, Typography, TextField, makeStyles, Button, Box } from '@material-ui/core'
 import { useStore } from '../Store'
 import axios from 'axios'
 import Cart from '../components/Cart';
@@ -19,27 +19,47 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  
+
 }));
 
 const Checkout = () => {
   const classes = useStyles();
   const [store, dispatch] = useStore();
   const [address, setAddress] = useState('')
+  const email = useInput('')
+  const name = useInput('')
+  const [total, setTotal] = useState(0)
 
-  const {login_type} = browserStore.get('user')
+  const { login_type } = browserStore.get('user')
   let history = useHistory();
 
   const placeOrder = () => {
-    const { id } = browserStore.get('user')
-    axios.post('/order/ord/', {
-      delivered: false,
-      ord_products: store.cart.map((prod) => ({product_obj: prod.id, quantity: prod.quantity})),
-      client: id
-    }).then((res)=> {
-      placeDelivery(res.data.id)
-      
-    })
+    const { id, login_type, workplace } = browserStore.get('user')
+    if (login_type === 'client') {
+      axios.post('/order/online/', {
+        delivered: false,
+        ord_products: store.cart.map((prod) => ({ product_obj: prod.id, quantity: prod.quantity, selling_price: prod.selling_price, discount: prod.discount })),
+        client: id,
+        final_selling: total
+      }).then((res) => {
+        placeDelivery(res.data.id)
+
+      })
+    } else {
+      axios.post('/order/onsite/', {
+        delivered: true,
+        ord_products: store.cart.map((prod) => ({ product_obj: prod.id, quantity: prod.quantity, selling_price: prod.selling_price, discount: prod.discount })),
+        employee: id,
+        branch: workplace.id,
+        client_id: name.value,
+        client_email: email.value,
+        final_selling: total
+      }).then((res) => {
+        dispatch({ type: 'clear-cart' })
+        history.replace('/orders');
+      })
+    }
+
   }
 
   const placeDelivery = (orderId) => {
@@ -54,7 +74,7 @@ const Checkout = () => {
       delivery_date: newdate,
       status: 1
     }).then((res) => {
-      dispatch({type: 'clear-cart'})
+      dispatch({ type: 'clear-cart' })
       history.replace('/orders');
     })
   }
@@ -69,14 +89,14 @@ const Checkout = () => {
         </Box>
         {store.cart.length > 0 ?
           <div>
-            <Cart/>
-            {login_type === 'client' ? 
+            <Cart total={total} setTotal={setTotal} />
+            {login_type === 'client' ?
               <>
                 <div className={classes.input}>
                   <Typography variant="subtitle1">
                     Seleccione una direccion
                   </Typography>
-                  <AddressPicker address={address} setter={setAddress}/>
+                  <AddressPicker address={address} setter={setAddress} />
                 </div>
                 <div className={classes.input}>
                   <Typography variant="subtitle1">
@@ -85,17 +105,28 @@ const Checkout = () => {
                   <TextField label="Número de tarjeta" variant="outlined" className={classes.input} />
                   <TextField label="Fecha de vencimiento" variant="outlined" className={classes.input} />
                   <TextField label="CVV" variant="outlined" className={classes.input} />
-                  
+
                 </div>
               </>
               :
-              <div className={classes.input}>
-                <Payments/>
-              </div>
+              <>
+                <div className={classes.input}>
+                  <Typography variant="subtitle1">
+                    Datos del cliente
+                  </Typography>
+                  <TextField {...name} label="Nombre de cliente" variant="outlined" className={classes.input} />
+                  <TextField {...email} label="Email del cliente" variant="outlined" className={classes.input} />
+                </div>
+
+                <div className={classes.input}>
+                  <Payments />
+                </div>
+
+              </>
             }
-            
+
             <div>
-              <Button variant="contained" color="primary" onClick={()=> placeOrder()}>
+              <Button variant="contained" color="primary" onClick={() => placeOrder()}>
                 Pagar
               </Button>
             </div>
@@ -110,6 +141,18 @@ const Checkout = () => {
       </Container>
     </>
   );
+}
+
+const useInput = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
+
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+  return {
+    value: value,
+    onChange: handleChange
+  }
 }
 
 export default Checkout;

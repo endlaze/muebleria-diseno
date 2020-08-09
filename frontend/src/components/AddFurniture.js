@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { makeStyles, FormControl, InputLabel, MenuItem, Typography, Select, TextField, Container, Button, Snackbar, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { makeStyles, FormControl, InputLabel, MenuItem, Typography, Select, TextField, Container, Button, Snackbar, Table, TableHead, TableBody, TableRow, TableCell, Box } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     margin: '20px 20px 20px 20px',
     minWidth: 200,
@@ -28,7 +28,13 @@ const useStyles = makeStyles(() => ({
   },
   pt30: {
     paddingTop: '30px'
-  }
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 }));
 
 const Furniture = () => {
@@ -68,8 +74,15 @@ const Furniture = () => {
   useEffect(() => {
     getMany(setBaseMaterials, 'product/material/')
     getMany(setFurnitureTypes, 'product/furniture_type/')
-    getMany(setWorkplaces, '/location/workplace/')
+    getWorkplaces()
   }, [])
+
+  const getWorkplaces = () => {
+    axios.get('/location/workplace/').then((workplaces)=>{
+      let filtered = workplaces.data.filter((wp) => wp.wp_type === 1)
+      setWorkplaces(filtered)
+    })
+  }
 
   const getMany = (setter, route) => {
     axios.get(route).then((res) => {
@@ -142,7 +155,11 @@ const Furniture = () => {
 
   return (
     <Container>
-
+      <Box className={classes.paper}>
+          <Typography variant="h2">
+            Agregar un mueble
+        </Typography>
+        </Box>
       <div>
         <Typography variant="h6" className={classes.pt30}>Imagen del mueble</Typography>
 

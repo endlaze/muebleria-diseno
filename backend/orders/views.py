@@ -1,11 +1,15 @@
 from rest_framework import viewsets
-from .models import Order, Delivery, Review
-from .serializers import OrderSerializer, DeliverySerializer, ReviewSerializer
+from .models import OnlineOrder, OnSiteOrder, Delivery, Review
+from .serializers import OnlineOrderSerializer, OnSiteOrderSerializer, DeliverySerializer, ReviewSerializer
 
 
-class OrderViewSet(viewsets.ModelViewSet):
-    serializer_class = OrderSerializer
-    queryset = Order.objects.all()
+class OnlineOrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OnlineOrderSerializer
+    queryset = OnlineOrder.objects.all()
+
+class OnSiteOrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OnSiteOrderSerializer
+    queryset = OnSiteOrder.objects.all()
 
 
 class DeliveryViewSet(viewsets.ModelViewSet):

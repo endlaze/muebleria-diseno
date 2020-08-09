@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Material, FurnitureType, Furniture, FurnitureComboItem, FurnitureCombo
+from .models import Material, FurnitureType, Furniture, FurnitureComboItem, FurnitureCombo, Promotion
 from locations.models import Workplace
 from locations.serializers import WorkplaceSerializer
 
@@ -131,3 +131,10 @@ class FurnitureComboSerializer(ProductSerializer):
         new_combo_item.save()
 
         return new_combo_item
+
+class PromotionSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Promotion
+        fields = ['id', 'final_date', 'discount', 'product']

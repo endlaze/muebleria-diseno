@@ -4,20 +4,26 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import axios from 'axios'
-import { InputLabel, Button } from '@material-ui/core';
+import { InputLabel, Button, Container, Box, Typography } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   selector: {
     margin: '20px 20px 20px 20px',
     minWidth: 120,
   },
   button: {
     marginLeft: 20
-  }
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 }));
 
 const Workplace = () => {
@@ -81,9 +87,14 @@ const Workplace = () => {
   }
 
   return (
-    <>
+    <Container>
+      <Box className={classes.paper}>
+          <Typography variant="h2">
+            Agregar una sucursal
+        </Typography>
+        </Box>
       <div>
-        <FormControl className={classes.selector}>
+        <FormControl fullWidth className={classes.selector}>
           <InputLabel id="demo-simple-select-label">Pais</InputLabel>
           <Select
             value={country}
@@ -95,7 +106,7 @@ const Workplace = () => {
           </Select>
         </FormControl>
 
-        <FormControl className={classes.selector} disabled={country ? false : true} >
+        <FormControl fullWidth className={classes.selector} disabled={country ? false : true} >
           <InputLabel>Estado</InputLabel>
           <Select
             value={state}
@@ -107,7 +118,7 @@ const Workplace = () => {
 
           </Select>
         </FormControl>
-        <FormControl className={classes.selector}>
+        <FormControl fullWidth className={classes.selector}>
           <InputLabel >Tipo de sucursal</InputLabel>
           <Select
             value={workplaceType}
@@ -133,7 +144,7 @@ const Workplace = () => {
           Sucursal creada
         </Alert>
       </Snackbar>
-    </>
+    </Container>
   );
 }
 

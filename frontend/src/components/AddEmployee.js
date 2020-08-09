@@ -1,16 +1,22 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import { makeStyles, FormControl, InputLabel, MenuItem, Select, TextField, Container, Button, Snackbar } from '@material-ui/core';
+import { makeStyles, FormControl, InputLabel, MenuItem, Select, TextField, Container, Button, Snackbar, Box, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     margin: '20px 20px 20px 20px',
     minWidth: 200,
   },
   button: {
     marginLeft: 20
-  }
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 }));
 
 const Employee = () => {
@@ -101,6 +107,11 @@ const Employee = () => {
 
   return(
     <Container>
+      <Box className={classes.paper}>
+          <Typography variant="h2">
+            Agregar un empleado
+        </Typography>
+        </Box>
     <div noValidate autoComplete="off">
       <TextField label="Nombre" variant="outlined" {...name} className={classes.input}/>
       <TextField label="Apellidos" variant="outlined" {...lastName} className={classes.input}/>
@@ -127,7 +138,7 @@ const Employee = () => {
             onChange={handleWorkplaceChange}
           >
             {worplaces.map((wp, index) => 
-              <MenuItem key={index} value={wp.id}>{wp.wp_type === "1"? "Sucursal " : "Taller "}{wp.state.name}</MenuItem>
+              <MenuItem key={index} value={wp.id}>{wp.wp_type === 1? "Sucursal " : "Taller "}{wp.state.name}</MenuItem>
             )}
           </Select>
         </FormControl>

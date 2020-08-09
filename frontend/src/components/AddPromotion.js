@@ -28,7 +28,7 @@ const Review = () => {
     setSnack({ ...snack, open: false });
   };
 
-  const price = useInput('')
+  const discount = useInput('')
   const date = useInput('')
 
 
@@ -44,9 +44,9 @@ const Review = () => {
 
   const submitPromotion = () => {
       axios.post(/*DIRECCION DEL POST DE LA PROMOCION ,*/ {
-          price: price.value,
-          date: date.value,
-          product_id: product,
+          discount: discount.value,
+          final_date: date.value,
+          product: product,
       }).then(() => {
           setSnack({ open: true, severity: 'success', message: 'Promoción creada.' })
       })
@@ -57,13 +57,13 @@ const Review = () => {
   }
 
   const validateForm = () => {
-    return (price.value && date.value && product) || false
+    return (discount.value && date.value && product) || false
   }
 
   return (
     <Container>
       <div noValidate autoComplete="off">
-        <TextField label="Precio" variant="outlined" {...price} className={classes.input} />
+        <TextField label="Descuento" variant="outlined" {...discount} className={classes.input} />
         <TextField label="Fecha" variant="outlined" {...date} className={classes.input} />
         <FormControl className={classes.input}>
             <InputLabel>Producto</InputLabel>

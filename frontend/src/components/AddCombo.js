@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Modal, makeStyles, FormControl, Grid, InputLabel, MenuItem, Select, Dialog, DialogTitle, TextField, Container, Button, Snackbar, Typography, Table, TableCell, TableBody, Backdrop, Fade, TableHead, TableRow } from '@material-ui/core';
+import { Modal, makeStyles, FormControl, Grid, InputLabel, MenuItem, Select, Dialog, DialogTitle, TextField, Container, Button, Snackbar, Typography, Table, TableCell, TableBody, Backdrop, Fade, TableHead, TableRow, Box } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { v4 as uuidv4 } from 'uuid';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import { useHistory } from 'react-router-dom';
 
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     input: {
         margin: '20px 20px 20px 20px',
         minWidth: 200,
@@ -39,19 +40,31 @@ const useStyles = makeStyles(() => ({
         background: '#ffb74d',
         borderRadius: '4px',
         margin: '5px'
-    }
+    },
+    paper: {
+        margin: theme.spacing(8, 4),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    image: {
+        margin: '20px',
+        maxWidth: 150
+      },
 }));
 
 const initMatModState = { open: false, comboItemId: '', selectedMaterial: '' }
 
 
 const Combo = () => {
+    const history = useHistory()
     const classes = useStyles();
 
     const [furnitureTypes, setFurnitureTypes] = useState([])
     const [baseMaterials, setBaseMaterials] = useState([])
     const [workplaces, setWorkplaces] = useState([])
     const [matModal, setMatModal] = useState(initMatModState);
+    const [image, setImage] = useState('')
 
     const [furnitureType, setFurnitureType] = useState('')
     const [workplace, setWorkplace] = useState('')
@@ -66,8 +79,15 @@ const Combo = () => {
     useEffect(() => {
         getMany(setBaseMaterials, 'product/material/')
         getMany(setFurnitureTypes, 'product/furniture_type/')
-        getMany(setWorkplaces, '/location/workplace/')
+        getWorkplaces()
     }, [])
+
+    const getWorkplaces = () => {
+        axios.get('/location/workplace/').then((workplaces) => {
+            let filtered = workplaces.data.filter((wp) => wp.wp_type === 1)
+            setWorkplaces(filtered)
+        })
+    }
 
     const handleModalOpen = (comboItemId) => {
         setMatModal({ open: true, comboItemId: comboItemId, selectedMaterial: '' })
@@ -177,9 +197,12 @@ const Combo = () => {
             description: description.value,
             price: price.value,
             available_quantity: availableQuantity.value,
-            combo_products: comboProducts
+            combo_products: comboProducts,
+            picture: image
         }).then(() => {
-            setSnack({ open: true, severity: 'success', message: 'Empleado creado.' })
+            setSnack({ open: true, severity: 'success', message: 'Combo creado.' })
+            setTimeout(()=> {window.location.reload()}, 2000)
+            
         })
     }
 
@@ -204,10 +227,40 @@ const Combo = () => {
         return (furnitureType) || false
     }
 
+    const processImage = (imageFile) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            resolve(event.target.result)
+        }
+
+        if (imageFile) {
+            reader.readAsDataURL(imageFile);
+        }
+    });
+
+
+    const handleFileUpload = (e) => {
+        processImage(e.target.files[0]).then((encoded) => {
+            setImage(encoded)
+        })
+    }
+
     return (
         <Container>
+            <Box className={classes.paper}>
+                <Typography variant="h2">
+                    Agregar un combo
+                </Typography>
+            </Box>
+            <div>
+                <Typography variant="h6" className={classes.pt30}>Imagen del combo</Typography>
+
+                {(image !== '') ? <img src={image} className={classes.image}></img> : null}
+
+                <TextField onChange={handleFileUpload} type="file" accept="image/*" variant="outlined" className={classes.input} />
+            </div>
             <div noValidate autoComplete="off">
-                <Typography variant="h4">Agregar nuevo combo</Typography>
+                <Typography variant="h6">Caracteristicas del combo</Typography>
                 <TextField label="Titulo" variant="outlined" {...title} className={classes.input} />
                 <TextField label="Descripcion" variant="outlined" {...description} className={classes.input} />
                 <TextField label="Precio" variant="outlined" {...price} className={classes.input} />
@@ -221,7 +274,7 @@ const Combo = () => {
                         onChange={e => handleChange(setWorkplace, e.target.value)}
                     >
                         {workplaces.map((wp, index) =>
-                            <MenuItem key={index} value={wp.id}>{wp.wp_type === "1" ? "Sucursal " : "Taller "}{wp.state.name}</MenuItem>
+                            <MenuItem key={index} value={wp.id}>{wp.wp_type === 1 ? "Sucursal " : "Taller "}{wp.state.name}</MenuItem>
                         )}
                     </Select>
                 </FormControl>

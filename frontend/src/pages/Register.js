@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -13,7 +12,6 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { FormControl, OutlinedInput, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import PropTypes from 'prop-types';
 import Address from '../components/AddAddress';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom';
@@ -51,7 +49,7 @@ export default function Register() {
     birthday: ''
   });
 
-  const [ showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const [addressValues, setAddressValues] = useState({
     country: '',
@@ -108,7 +106,7 @@ export default function Register() {
     }).then((res) => {
       history.replace('/login');
     })
-  } 
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -120,121 +118,121 @@ export default function Register() {
         <Typography component="h1" variant="h5">
           Registro
         </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="Nombre"
-                autoFocus
-                value={values.firstName}
-                onChange={handleChange('firstName')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Apellidos"
-                name="lastName"
-                autoComplete="lname"
-                value={values.lastName}
-                onChange={handleChange('lastName')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="username"
-                label="Nombre de usuario"
-                name="username"
-                value={values.username}
-                onChange={handleChange('username')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                name="email"
-                autoComplete="email"
-                value={values.email}
-                onChange={handleChange('email')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="birthday"
-                label="Fecha de nacimiento aaaa/mm/dd"
-                name="birthday"
-                value={values.birthday}
-                onChange={handleChange('birthday')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
-                <OutlinedInput
-                  variant="outlined"
-                  required
-                  labelWidth={70}
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={values.password}
-                  onChange={handleChange('password')}
-                  id="outlined-adornment-password"
-                  autoComplete="current-password"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Grid>
-
-            <Address setter={setAddressValues}></Address>
-
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoComplete="fname"
+              name="firstName"
+              variant="outlined"
+              required
+              fullWidth
+              id="firstName"
+              label="Nombre"
+              autoFocus
+              value={values.firstName}
+              onChange={handleChange('firstName')}
+            />
           </Grid>
-          
-          <Button
-            disabled={!validFields()}
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={()=> submitClient()}
-          >
-            Registrarse
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="lastName"
+              label="Apellidos"
+              name="lastName"
+              autoComplete="lname"
+              value={values.lastName}
+              onChange={handleChange('lastName')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="username"
+              label="Nombre de usuario"
+              name="username"
+              value={values.username}
+              onChange={handleChange('username')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
+              value={values.email}
+              onChange={handleChange('email')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="birthday"
+              label="Fecha de nacimiento aaaa/mm/dd"
+              name="birthday"
+              value={values.birthday}
+              onChange={handleChange('birthday')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+              <OutlinedInput
+                variant="outlined"
+                required
+                labelWidth={70}
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                value={values.password}
+                onChange={handleChange('password')}
+                id="outlined-adornment-password"
+                autoComplete="current-password"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Grid>
+
+          <Address setter={setAddressValues}></Address>
+
+        </Grid>
+
+        <Button
+          disabled={!validFields()}
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={() => submitClient()}
+        >
+          Registrarse
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2"  >
-                {"Ya tienes una cuenta? Ingresa!"}
-              </Link>
-            </Grid>
+        <Grid container justify="flex-end">
+          <Grid item>
+            <Link href="/login" variant="body2"  >
+              {"Ya tienes una cuenta? Ingresa!"}
+            </Link>
           </Grid>
+        </Grid>
       </div>
     </Container>
   );

@@ -56,3 +56,12 @@ class FurnitureComboItem(models.Model):
         related_name='combo_products',
         on_delete=models.CASCADE
     )
+
+class Promotion(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name='promotion',
+        on_delete=models.CASCADE
+    )
+    final_date = models.DateField()
+    discount = models.FloatField()
