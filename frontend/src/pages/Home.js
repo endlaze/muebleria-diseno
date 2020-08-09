@@ -9,27 +9,26 @@ import Report from '../components/Report'
 import ComboForm from '../components/AddCombo'
 
 const Home = () => {
+	const { login_type, workplace } = store.get('user')
 	console.log(store.get('user'))
-	const {login_type, workplace} = store.get('user')
-	console.log(login_type)
 	return (
-			<>
-				{login_type !== 'manager' ?
-					<>
-					<Header/>
+		<>
+			{login_type !== 'manager' ?
+				<>
+					<Header />
 					<ProductList></ProductList>
-					</>
+				</>
 				:
 				<>
-					<EmployeeForm/>
-					<FurnitureForm/>
-					<WorkplaceForm/>
-					<ComboForm/>
+					<EmployeeForm />
+					<FurnitureForm />
+					<WorkplaceForm />
+					<ComboForm />
 					<Report branch={workplace.id}></Report>
 				</>
-				}
-				
-			</>
+			}
+
+		</>
 	);
 }
 

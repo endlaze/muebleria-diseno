@@ -1,44 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
-import { makeStyles, Dialog, TextField, Button, Typography, Box} from '@material-ui/core';
+import { makeStyles, Dialog, TextField, Button, Typography, Box } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
 
 const useStyles = makeStyles(() => ({
   input: {
     margin: '0px 20px 20px 20px',
-    minWidth:100
+    minWidth: 100
   },
   button: {
-    margin:'15px 7px 15px 7px'
+    margin: '15px 7px 15px 7px'
   },
-  modalTitle:{
-    textAlign:'center',
-    margin:5,
-    fontWeight:'bold'
+  modalTitle: {
+    textAlign: 'center',
+    margin: 5,
+    fontWeight: 'bold'
   },
-  punct:{
-    marginTop:10,
-    marginLeft:20
+  punct: {
+    marginTop: 10,
+    marginLeft: 20
   },
   punctLabel: {
-    marginLeft:10,
-    marginBottom:10,
-    fontWeight:"bold",
-    fontSize:'1.1em'
+    marginLeft: 10,
+    marginBottom: 10,
+    fontWeight: "bold",
+    fontSize: '1.1em'
   },
   ratingStars: {
     minWidth: 200,
     display: 'flex',
     alignItems: 'center',
-    margin:10
+    margin: 10
   },
-  
+
 }));
 
 const AddReviewModal = (props) => {
   const { open, onClose, product, idOrder } = props
-  console.log(product)
   const classes = useStyles();
   const [added, setAdded] = useState(false)
 
@@ -85,22 +84,22 @@ const AddReviewModal = (props) => {
       <Typography variant="h5" className={classes.modalTitle}>Calificar producto</Typography>
       <div noValidate autoComplete="off">
         <div>
-        <Typography variant="h6" className={classes.punct}>Puntuación</Typography>
-        <div className={classes.ratingStars}>
-      <Rating
-        value={value}
-        precision={1}
-        onChange={(event, newValue) => {
-          if(newValue){
-            setValue(newValue);
-          }
-        }}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-      />
-      {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
-    </div>
+          <Typography variant="h6" className={classes.punct}>Puntuación</Typography>
+          <div className={classes.ratingStars}>
+            <Rating
+              value={value}
+              precision={1}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setValue(newValue);
+                }
+              }}
+              onChangeActive={(event, newHover) => {
+                setHover(newHover);
+              }}
+            />
+            {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>}
+          </div>
         </div>
         <TextField label="Comentario" variant="outlined" {...comment} className={classes.input} />
       </div>

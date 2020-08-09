@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { FormControl, InputLabel, Select, makeStyles, MenuItem } from '@material-ui/core';
 import store from 'store'
 const useStyles = makeStyles(() => ({
@@ -14,7 +13,6 @@ const AddressPicker = ({ address, setter }) => {
   const [addresses, setAddresses] = useState([])
 
   useEffect(() => {
-    console.log(address)
     getAddress(setAddresses)
   }, [])
 

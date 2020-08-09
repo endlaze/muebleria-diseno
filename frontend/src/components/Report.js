@@ -1,10 +1,7 @@
-import React, {use, useMemo, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 import axios from 'axios'
 import _ from 'lodash'
-import { Button } from '@material-ui/core'
-
-
 
 const Report = ({ branch }) => {
 
