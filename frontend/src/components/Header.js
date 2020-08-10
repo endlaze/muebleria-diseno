@@ -10,7 +10,6 @@ const useStytles = makeStyles({
 		backgroundSize: 'cover',
 	},
 	mainHeaderText: {
-
 		backgroundColor: 'rgba(0,0,0, 0.4)', /* Black w/opacity/see-through */
 		color: 'white',
 		fontWeight: 'bold',

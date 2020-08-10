@@ -20,11 +20,8 @@ const useStyles = makeStyles({
   flex: {
     display: 'flex'
   },
-  material: {
-
-  },
   table: {
-    minWidth: 500
+    
   },
   modalTitle: {
     textAlign: 'center',
@@ -38,11 +35,15 @@ const useStyles = makeStyles({
     margin: 'auto',
     borderRadius: '4px'
   },
+  center:{
+    display: 'block',
+    margin: 'auto'
+  }
+  ,
   prodDetails: {
     marginTop: 15
   },
   ratingStars: {
-    minWidth: 200,
     display: 'flex',
     alignItems: 'center',
     margin: 10
@@ -54,12 +55,15 @@ const useStyles = makeStyles({
     marginLeft: 8
   },
   ratingWrapper: {
-    padding: 5,
+    margin:5,
     background: '#f8f1da',
     borderBottom: '2px solid #EBEBEB'
   },
   cont: {
-    margin: 10
+  
+  },
+  dialogWidth:{
+    minWidth:700
   }
 });
 
@@ -89,12 +93,11 @@ const ShowProduct = ({ products, show, closeModal, product, fullProduct }, props
 
   }, [product])
 
-
-
   return (
     <>
-      <Dialog onClose={() => closeModal()} open={show}>
-        <Container className={classes.cont}>
+      <Dialog onClose={() => closeModal()} open={show} maxWidth="md" scroll='body'>
+        <div className ={classes.dialogWidth}>
+        <Container>
           <Typography variant="h5" className={classes.modalTitle}>{fullProduct.title}</Typography>
           <img className={classes.prodPic} src={fullProduct.picture}></img>
           <Typography variant="h6" className={classes.prodDetails}>Detalles del producto</Typography>
@@ -117,13 +120,15 @@ const ShowProduct = ({ products, show, closeModal, product, fullProduct }, props
                   </TableCell>
                   <TableCell>
                     {item.materials.map((material, index) =>
-                      <Typography key={index}>{material.description}</Typography>
+                      <Typography key={index}>- {material.description}</Typography>
                     )}
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+          </Container>
+          <Container>
 
           <Typography variant="h6" className={classes.prodDetails}>Valoraciones del producto</Typography>
           {reviews.map((rev, index) => (
@@ -140,6 +145,7 @@ const ShowProduct = ({ products, show, closeModal, product, fullProduct }, props
             </div>
           ))}
         </Container>
+        </div>
       </Dialog>
     </>
   );

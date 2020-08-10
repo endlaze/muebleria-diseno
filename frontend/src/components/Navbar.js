@@ -6,8 +6,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/icons/Menu'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import {Link, useHistory} from 'react-router-dom'
-import {useStore} from '../Store'
+import { Link, useHistory } from 'react-router-dom'
+import { useStore } from '../Store'
 import stores from 'store'
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 const AppNavbar = () => {
+  const { emp_type, workplace } = stores.get('user')
+
   const [store, dispatch] = useStore();
   const classes = useStyles();
   const history = useHistory();
@@ -41,29 +43,27 @@ const AppNavbar = () => {
     stores.clearAll()
     history.replace('/login')
   }
-  return(
+  return (
     <div className={classes.root}>
       <AppBar position="sticky" className={classes.navbar}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <Menu />
-          </IconButton>
           <Link className={classes.link} to="/">
-          <Typography  variant="h6" >
-            MueblesTEC
+            <Typography variant="h6" >
+              MueblesTEC
           </Typography>
           </Link>
-          <Link to="/orders">
-          <Typography className={classes.link} variant="h6" >
-            Ordenes
-          </Typography> 
-          </Link>
+          {((emp_type === undefined) || (emp_type.id !== 1)) ?
+            <Link to="/orders">
+              <Typography className={classes.link} variant="h6" >
+                Ordenes
+          </Typography>
+            </Link> : null}
           <Link to="/checkout">
-          <Typography className={classes.link} variant="h6" >
-            Carrito {store.cart.length}
-          </Typography> 
+            <Typography className={classes.link} variant="h6" >
+              Carrito {store.cart.length}
+            </Typography>
           </Link>
-          <Button onClick={()=>logout()}color="inherit">Salir</Button>
+          <Button onClick={() => logout()} color="inherit">Salir</Button>
         </Toolbar>
       </AppBar>
     </div>

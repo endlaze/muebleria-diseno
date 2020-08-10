@@ -2,8 +2,24 @@ import React, {useEffect, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 import axios from 'axios'
 import _ from 'lodash'
+import { Typography, makeStyles, Box} from '@material-ui/core'
+
+const useStyles = makeStyles ((theme) => ({
+  input: {
+    margin: '20px 20px 0 20px',
+    minWidth: 200,
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
+}));
 
 const Report = ({ branch }) => {
+  const classes = useStyles();
+  
 
   const [data, setData] = useState([])
   const [labels, setLabels] = useState([])
@@ -73,6 +89,11 @@ const Report = ({ branch }) => {
 
   return (
     <>
+    <Box className={classes.paper}>
+        <Typography variant="h2">
+            Reporte de ventas
+        </Typography>
+      </Box>
 
       <div style={{width: '600px', margin: 'auto'}}>
         <Line data={graph}/>

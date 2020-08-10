@@ -8,9 +8,9 @@ import store from 'store'
 import Report from '../components/Report'
 import ComboForm from '../components/AddCombo'
 
+
 const Home = () => {
 	const { login_type, workplace } = store.get('user')
-	console.log(store.get('user'))
 	return (
 		<>
 			{login_type !== 'manager' ?
