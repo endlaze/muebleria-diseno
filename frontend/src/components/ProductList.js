@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button } from '@material-ui/core';
 import axios from 'axios'
 import ShowProduct from './ShowProduct';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import store from 'store'
+import ShowSalary from './ShowSalary'
 
 const useStyles = makeStyles({
   productContainer: {
@@ -14,10 +17,19 @@ const useStyles = makeStyles({
   product: {
     margin: 'auto',
     marginTop: '20px'
-  }
+  },
+  salaryBtn: {
+    float: 'right',
+    margin: 20
+  },
+  mtSpacing: {
+	  marginTop: 40,
+	}
 })
 
 const ProductList = () => {
+  const { emp_type } = store.get('user')
+
   const classes = useStyles();
   const [furnitures, setFurnitures] = useState([])
   const [combos, setCombos] = useState([])
@@ -28,6 +40,7 @@ const ProductList = () => {
   const [fullProduct, setFullProduct] = useState({})
   const [modal, setModal] = useState(false)
   const [product, setProduct] = useState(0)
+  const [salaryModal, setSalaryModal] = useState(false)
 
   useEffect(() => {
     axios.get('/product/furniture/').then((fornitures) => {
@@ -81,26 +94,44 @@ const ProductList = () => {
     setModal(true)
   }
 
+
+  const changeSalaryModalState = () => {
+    setSalaryModal(!salaryModal)
+  }
+
+
   const closeModal = () => {
     setModal(false)
   }
 
   return (
     <>
+      <div>
+        {((emp_type !== undefined) && (emp_type.id === 1)) ?
+          <Button
+            className={classes.salaryBtn}
+            onClick={() => changeSalaryModalState()}
+            variant="contained"
+            color="primary"
+            startIcon={<AttachMoneyIcon />}>
+            Ver salario
+        </Button> : null}
+      </div>
       <Container className={classes.productContainer}>
-        <Typography variant="h2" gutterBottom> Nuestros productos</Typography>
+        <Typography variant="h2" gutterBottom className={classes.mtSpacing}> Nuestros productos</Typography>
         <Box display="flex" flexWrap="wrap" justifyContent="center" className={classes.productContainer}>
           {furnitures.map((product, index) =>
             <Product showModal={showModal} fullProduct={product} products={[product]} key={index} {...product} product={product} selling_price={product.selling_price}></Product>
           )}
         </Box>
-        <Typography variant="h2" gutterBottom> Combos </Typography>
+        <Typography variant="h2" gutterBottom className={classes.mtSpacing}> Combos </Typography>
         <Box display="flex" flexWrap="wrap" justifyContent="center" className={classes.productContainer}>
           {combos.map((product, index) =>
             <Product showModal={showModal} fullProduct={product} products={product.combo_products} key={index} {...product} product={product} selling_price={product.selling_price}></Product>
           )}
         </Box>
         <ShowProduct product={product} closeModal={closeModal} show={modal} products={products} fullProduct={fullProduct} />
+        <ShowSalary closeModal ={changeSalaryModalState} show={salaryModal}/>
       </Container>
     </>
 

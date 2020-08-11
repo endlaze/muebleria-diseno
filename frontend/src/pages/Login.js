@@ -52,10 +52,13 @@ const useStyles = makeStyles((theme) => ({
   },
   radio: {
     display: 'inline'
+  },
+  userType: {
+    marginTop: 20
   }
 }));
 
-export default function Login( ) {
+export default function Login() {
   let history = useHistory()
   let location = useLocation()
   const classes = useStyles();
@@ -87,23 +90,23 @@ export default function Login( ) {
     event.preventDefault();
   };
 
-  function signIn () {
-    
+  function signIn() {
+
     let { from } = location.state || { from: { pathname: "/" } };
     axios.post('/account/auth/login/', {
       username: values.username,
       password: values.password,
       login_type: values.login_type
-    }).then((data)=> {
-      if(JSON.stringify(data.data) !== JSON.stringify({})) {
-        store.set('user', {...data.data, login_type: values.login_type})
+    }).then((data) => {
+      if (JSON.stringify(data.data) !== JSON.stringify({})) {
+        store.set('user', { ...data.data, login_type: values.login_type })
         history.replace(from);
       } else {
         setSnack({ open: true, message: 'Contraseña o usuario incorrecto', severity: 'error' })
       }
 
     })
-    
+
 
   }
 
@@ -114,7 +117,7 @@ export default function Login( ) {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <AttachMoneyIcon/>
+            <AttachMoneyIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Ingresar
@@ -134,43 +137,43 @@ export default function Login( ) {
               onChange={handleChange('username')}
             />
             <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
-                <OutlinedInput
-                    id="outlined-adornment-password"
-                    margin="normal"
-                    required
-                    labelWidth={70}
-                    fullWidth
-                    type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange('password')}
-                    endAdornment={
-                        <InputAdornment position="end">
-                        <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                        >
-                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                        </InputAdornment>
-                    }
-                    autoComplete="current-password"
-                />
+              <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                margin="normal"
+                required
+                labelWidth={70}
+                fullWidth
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                onChange={handleChange('password')}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                autoComplete="current-password"
+              />
             </FormControl>
 
-            <FormControl component="fieldset">
+            <FormControl component="fieldset" className={classes.userType}>
               <FormLabel component="legend">Tipo de usuario</FormLabel>
               <RadioGroup className={classes.radio} value={values.login_type} onChange={handleChange('login_type')}>
-                <FormControlLabel labelPlacement="bottom" value="client" control={<Radio color="primary"/>} label="Cliente" />
-                <FormControlLabel labelPlacement="bottom"  value="employee" control={<Radio color="primary"/>} label="Empleado" />
-                <FormControlLabel labelPlacement="bottom" value="manager" control={<Radio color="primary"/>} label="Gerente" />
+                <FormControlLabel labelPlacement="bottom" value="client" control={<Radio color="primary" />} label="Cliente" />
+                <FormControlLabel labelPlacement="bottom" value="employee" control={<Radio color="primary" />} label="Empleado" />
+                <FormControlLabel labelPlacement="bottom" value="manager" control={<Radio color="primary" />} label="Gerente" />
               </RadioGroup>
             </FormControl>
 
             <Button
-              
+
               fullWidth
               variant="contained"
               color="primary"
@@ -182,9 +185,8 @@ export default function Login( ) {
             <Grid container>
               <Grid item>
                 <Link href="/register" variant="body2" >
-                  {"No tienes una cuenta? Registrate! "}
+                  {"¿No tienes una cuenta? Regístrate."}
                 </Link>
-                
               </Grid>
             </Grid>
           </form>
@@ -195,7 +197,7 @@ export default function Login( ) {
           {snack.message}
         </Alert>
       </Snackbar>
-      
+
     </Grid>
   );
 }

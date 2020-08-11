@@ -42,9 +42,6 @@ const Product = ({ title, description, price, available_quantity, product, selli
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {product.id}
-          </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
             {title}
           </Typography>
           {selling_price < price ?

@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react'
 import Employee from '../components/AddEmployee'
 import Report from '../components/Report';
 import axios from 'axios'
-import { FormControl, InputLabel, Select, makeStyles, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel, Select, makeStyles, MenuItem, Container } from '@material-ui/core';
 
 const useStyles = makeStyles ((theme) => ({
   input: {
@@ -40,6 +40,7 @@ const GeneralManager = (props) => {
   return(
     <>
       <Employee/>
+      <Container>
       <FormControl className={classes.input}>
           <InputLabel>Sucursal</InputLabel>
           <Select
@@ -53,6 +54,7 @@ const GeneralManager = (props) => {
           </Select>
       </FormControl>
       <Report branch={workplace}></Report>
+      </Container>
     </>
   );
 
