@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { makeStyles, FormControl, InputLabel, MenuItem, Select, TextField, Container, Button, Snackbar } from '@material-ui/core';
+import { makeStyles, FormControl, InputLabel, MenuItem, Select, TextField, Container, Button, Snackbar, Box, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     margin: '20px 20px 20px 20px',
     minWidth: 200,
   },
   button: {
+    marginTop: 30,
     marginLeft: 20
-  }
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 }));
 
 const Review = () => {
@@ -43,13 +50,13 @@ const Review = () => {
   }
 
   const submitPromotion = () => {
-      axios.post(/*DIRECCION DEL POST DE LA PROMOCION ,*/ {
-          discount: discount.value,
-          final_date: date.value,
-          product: product,
-      }).then(() => {
-          setSnack({ open: true, severity: 'success', message: 'Promoción creada.' })
-      })
+    axios.post('product/promotion/', {
+      discount: discount.value,
+      final_date: date.value,
+      product: product,
+    }).then(() => {
+      setSnack({ open: true, severity: 'success', message: 'Promoción creada.' })
+    })
   }
 
   const handleChange = (setter, value) => {
@@ -61,42 +68,48 @@ const Review = () => {
   }
 
   return (
-    <Container>
-      <div noValidate autoComplete="off">
-        <TextField label="Descuento" variant="outlined" {...discount} className={classes.input} />
-        <TextField label="Fecha" variant="outlined" {...date} className={classes.input} />
-        <FormControl className={classes.input}>
-            <InputLabel>Producto</InputLabel>
-            <Select
+    <>
+      <Container>
+        <Box className={classes.paper}>
+          <Typography variant="h2">
+            Agregar una Promoción
+          </Typography>
+        </Box>
+        <Container>
+          <div noValidate autoComplete="off">
+            <TextField label="Descuento" variant="outlined" {...discount} className={classes.input} />
+            <TextField label="Fecha" variant="outlined" {...date} className={classes.input} />
+            <FormControl className={classes.input}>
+              <InputLabel>Producto</InputLabel>
+              <Select
                 value={product}
                 onChange={e => handleChange(setProduct, e.target.value)}
-            >
+              >
                 {products.map((product, index) =>
-                    <MenuItem key={index} value={product.id}>{product.description}</MenuItem>
+                  <MenuItem key={index} value={product.id}>{product.description}</MenuItem>
                 )}
-            </Select>
-        </FormControl>
-
-      </div>
-      <div>
-        <Button onClick={() => submitPromotion()}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          disabled={validateForm() ? false : true}
-        >
-          Agregar pomoción
+              </Select>
+            </FormControl>
+            <Button onClick={() => submitPromotion()}
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              disabled={validateForm() ? false : true}
+            >
+              Agregar pomoción
         </Button>
-      </div>
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={snack.severity}>
-          {snack.message}
-        </Alert>
-      </Snackbar>
+
+          </div>
+          <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={snack.severity}>
+              {snack.message}
+            </Alert>
+          </Snackbar>
 
 
-    </Container>
-
+        </Container>
+      </Container>
+    </>
   );
 }
 

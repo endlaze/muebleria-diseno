@@ -112,7 +112,7 @@ const AddReviewModal = (props) => {
         >
           Enviar reseña
         </Button>
-        <Button onClick={() => submitReview()}
+        <Button onClick={() => handleClose(false)}
           className={classes.button}
           variant="contained"
           color="secondary"
