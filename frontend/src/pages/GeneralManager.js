@@ -1,10 +1,11 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Employee from '../components/AddEmployee'
 import Report from '../components/Report';
 import axios from 'axios'
 import { FormControl, InputLabel, Select, makeStyles, MenuItem, Container } from '@material-ui/core';
+import WorkplaceForm from '../components/AddWorkplace'
 
-const useStyles = makeStyles ((theme) => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     margin: '20px 20px 0 20px',
     minWidth: 200,
@@ -22,12 +23,12 @@ const GeneralManager = (props) => {
   const [worplaces, setWorkplaces] = useState([])
   const [workplace, setWorkplace] = useState('')
 
-  useEffect(()=>{
+  useEffect(() => {
     getWorkplaces()
   }, [])
 
   const getWorkplaces = () => {
-    axios.get('/location/workplace/').then((workplaces)=>{
+    axios.get('/location/workplace/').then((workplaces) => {
       let filtered = workplaces.data.filter((wp) => wp.wp_type === 1)
       setWorkplaces(filtered)
     })
@@ -37,23 +38,24 @@ const GeneralManager = (props) => {
     setWorkplace(event.target.value)
   }
 
-  return(
+  return (
     <>
-      <Employee/>
+      <WorkplaceForm />
+      <Employee />
       <Container>
-      <FormControl className={classes.input}>
+        <FormControl className={classes.input}>
           <InputLabel>Sucursal</InputLabel>
           <Select
             value={workplace}
             onChange={handleWorkplaceChange}
           >
-            {worplaces.map((wp, index) => 
+            {worplaces.map((wp, index) =>
               <MenuItem key={index} value={wp.id}>Sucursal {wp.state.name}</MenuItem>
             )}
             <MenuItem value={''}>Todas las ventas</MenuItem>
           </Select>
-      </FormControl>
-      <Report branch={workplace}></Report>
+        </FormControl>
+        <Report branch={workplace}></Report>
       </Container>
     </>
   );
